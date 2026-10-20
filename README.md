@@ -5,11 +5,12 @@ Interactive companion site for the CWA Seismological Center talk at the **EERI L
 **Live site:** https://oceanicdayi.github.io/2026_EERI_CWA_EEW/
 
 ## What's inside
-- **Hero seismogram**: the 2025 Dapu M6.4 earthquake seen from Tainan, with the alert issued before the P wave arrives.
+- **Hero seismogram**: a real record of the 2025 Dapu M6.4 earthquake from CWA station A004 in the Taipei Basin (229 km): alert at 7.9 s, P at 35.4 s, S at 62.0 s.
 - **The race**: warning time versus distance, network generation (2010 / 2016 / 2025) and alert channel.
 - **Alert simulator**: click anywhere on Taiwan and watch P and S fronts, alert timing, the blind zone and county-level alerts.
 - **Why Taiwan**, **How it works** (with a Pd magnitude calculator) and **25 years of getting faster** (with a blind-zone time machine).
 - **Case files**: 2025 Dapu, 2024 Hualien, and the February 2026 false alert from a deep Borneo earthquake.
+- **Real records**: replay five CWA stations in the Taipei Basin (east–west acceleration) with beam-based P and S picks, warning times and amplitude scaling.
 - **What's next**: FinDer and VS, on-site AI, an observed-intensity Transformer, a Large Earthquake Model (SeisWav2Vec 2.0), LLMs and AI agents.
 - **Quiz** and **resources** (GDMS open data, Docker images, studies cited).
 
@@ -21,5 +22,7 @@ Figures come from CWA Seismological Center presentations and the cited studies; 
 ## Structure
 - `index.html`: the whole site (HTML, CSS and JavaScript, no build step)
 - `assets/taiwan.js`: simplified county boundaries
+- `assets/dapu_records.js`: min/max envelopes of the five real Dapu records
+- `scripts/dapu_real_records_obspy.py`: ObsPy pipeline that reads the SAC files, picks P and S, and regenerates the figures and data (raw SAC files not included)
 - `assets/img/`: figures and photos
 - `assets/fonts/`: self-hosted fonts and licenses

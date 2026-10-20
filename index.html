@@ -216,6 +216,20 @@ figcaption{font-size:.88rem;color:var(--ink-2);margin-top:8px}
 .figs2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .seq{padding-left:1.3em;margin:0 0 14px}.seq li{margin-bottom:8px}
 .case-wide{margin-top:28px}
+/* real records */
+.records{margin-top:48px}
+.rec-ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0 12px}
+.rec-ctrl input[type=range]{flex:1;min-width:160px;width:auto}
+.rec-ctrl output{font:800 1.35rem var(--display);min-width:4.6ch;font-variant-numeric:tabular-nums}
+.rec-wrap{background:#0B2233;border-radius:var(--r-m);padding:10px 12px}
+#rec-canvas{display:block;width:100%;height:400px}
+.table-scroll{overflow-x:auto;margin-top:14px}
+.rec-table{width:100%;border-collapse:collapse;font-size:.98rem;min-width:560px}
+.rec-table th,.rec-table td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.rec-table th{font-size:.85rem;color:var(--ink-2)}
+.rec-table td.w{font-weight:700;color:var(--teal-ink)}
+.rec-table tr.hit td{background:rgba(228,87,46,.09)}
+@media (max-width:560px){#rec-canvas{height:330px}}
 /* next */
 .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:48px 0;border-top:1px solid var(--line)}
 .row.first{border-top:0;padding-top:24px}
@@ -292,15 +306,15 @@ footer{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area
     <figure class="trace-card" style="margin:0">
       <div class="trace-head">
         <div class="clock num" aria-hidden="true"><span id="clock">0.0</span><small>s</small></div>
-        <p class="trace-where">2025 Dapu M6.4, seen from Tainan, 45 km from the epicenter</p>
+        <p class="trace-where">2025 Dapu M6.4, recorded at CWA station A004 in Taipei, 229 km from the epicenter</p>
       </div>
-      <canvas id="trace" aria-label="Animated seismogram: the alert is issued at 7.9 seconds, the P wave reaches Tainan at 9.4 seconds and the S wave at 16.5 seconds" role="img"></canvas>
+      <canvas id="trace" aria-label="Real seismogram from CWA station A004 in Taipei: the alert is issued at 7.9 seconds, the P wave arrives at 35.4 seconds and the S wave at 62.0 seconds" role="img"></canvas>
       <ol class="trace-events">
-        <li class="a" data-t="7.9"><span class="num">7.9</span><span>CWA issues the alert, before the first P wave even reaches Tainan</span></li>
-        <li class="p" data-t="9.4"><span class="num">9.4</span><span>P wave arrives: weak shaking</span></li>
-        <li class="s" data-t="16.5"><span class="num">16.5</span><span>S wave arrives: strong shaking, 8.6 s after the alert</span></li>
+        <li class="a" data-t="7.9"><span class="num">7.9</span><span>CWA issues the alert, 28 s before the first P wave reaches Taipei</span></li>
+        <li class="p" data-t="35.4"><span class="num">35.4</span><span>P wave arrives: weak shaking</span></li>
+        <li class="s" data-t="62.0"><span class="num">62.0</span><span>S wave arrives: strong shaking, 54 s after the alert</span></li>
       </ol>
-      <div class="trace-foot"><span>Synthetic trace. Times follow the observed Dapu travel-time curves.</span><button type="button" id="replay">Replay</button></div>
+      <div class="trace-foot"><span>Real record: CWA station A004, east–west acceleration, read with ObsPy.</span><button type="button" id="replay">Replay</button></div>
     </figure>
   </div>
 </section>
@@ -311,6 +325,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area
       <h2>The race in one slider</h2>
       <p>Every earthquake sends out two body waves. P waves travel at about 6 to 7 km/s but shake gently. S waves follow at about 3.5 to 4 km/s and carry most of the damage. Stations near the epicenter catch the P wave, the system estimates location and magnitude, and the alert travels at network speed.</p>
       <p>Your warning time is the S-wave arrival minus the moment the alert reaches you. Close to the epicenter that number drops to zero: the blind zone.</p>
+      <p>Real check: five CWA stations in Taipei, 226–231 km from the Dapu epicenter, recorded the P wave at about 35 s and the S wave at about 62 s. At 229 km this simple model gives 36 s and 65 s.</p>
       <p class="small muted">Arrival times use the observed 2025 Dapu travel-time curves (P ≈ 2.9 s + d/6.9 km/s, S ≈ 4.5 s + d/3.77 km/s). Alert times are the real first alerts of 2010 Jiaxian, 2016 Meinong and 2025 Dapu.</p>
     </div>
     <div class="panel" id="race-widget">
@@ -514,6 +529,22 @@ footer{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area
         </div>
       </div>
       <figure class="case-wide fig"><img src="assets/img/dapu_heatmap.jpg" alt="Heatmap of maximum observed intensity by latitude band over the first 60 seconds, with alert times" loading="lazy"><figcaption>What the island felt, second by second. Rows are 0.1° latitude bands from south (bottom) to north (top); columns are seconds after origin. At the first alert only the epicentral band was shaking hard; northern Taiwan felt nothing for another 20 to 40 s.</figcaption></figure>
+      <div class="records" id="records">
+        <h3>Replay the real records</h3>
+        <p>East–west acceleration of the Dapu earthquake recorded by five CWA stations in the northern Taipei Basin, 226–231 km from the epicenter, aligned on the origin time (00:17:26.9 local). The first alert went out at 7.9 s, about 28 s before the P wave reached Taipei and 54 s before the S wave.</p>
+        <div class="rec-ctrl">
+          <button type="button" class="btn primary" id="rec-play">Play</button>
+          <input type="range" id="rec-t" min="-5" max="95" step="0.1" value="95" aria-label="Seconds after the earthquake began">
+          <output id="rec-t-out" for="rec-t">95.0 s</output>
+          <div class="seg" id="rec-scale" role="group" aria-label="Amplitude scaling"><button type="button" data-v="norm" aria-pressed="true">Each trace scaled</button><button type="button" data-v="true" aria-pressed="false">Same scale</button></div>
+        </div>
+        <div class="rec-wrap"><canvas id="rec-canvas" role="img" aria-label="Record section of five CWA stations in Taipei: the alert at 7.9 s, P waves at about 35 s and S waves at about 62 s after the earthquake began"></canvas></div>
+        <div class="table-scroll"><table class="rec-table">
+          <thead><tr><th scope="col">Station</th><th scope="col">Distance</th><th scope="col">P wave</th><th scope="col">S wave</th><th scope="col">S wave after the alert</th><th scope="col">Relative peak</th></tr></thead>
+          <tbody id="rec-tbody"></tbody>
+        </table></div>
+        <p class="small muted">Raw counts from the SAC files, read with ObsPy, demeaned and high-passed at 0.05 Hz. P and S were picked on the five-station beam (envelopes stacked after a distance correction, AIC picker), because one horizontal component makes the regional S onset ambiguous. Peaks differ 2.9-fold within 8 km, most likely because of local site conditions; the strongest shaking arrived later still, 75–86 s after origin. Reproduce it with <a href="https://github.com/oceanicdayi/2026_EERI_CWA_EEW/blob/main/scripts/dapu_real_records_obspy.py">the ObsPy script</a>.</p>
+      </div>
     </div>
     <div role="tabpanel" id="panel-hualien" aria-labelledby="tab-hualien" tabindex="0" hidden>
       <div class="case">
@@ -680,6 +711,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area
 
 <noscript><p style="text-align:center;padding:12px">The interactive parts of this page need JavaScript; the text and figures work without it.</p></noscript>
 <script src="assets/taiwan.js"></script>
+<script src="assets/dapu_records.js"></script>
 <script>
 (() => {
 "use strict";
@@ -708,35 +740,35 @@ function seg(root, onChange) {
 }
 const segVal = (root) => ($("button[aria-pressed='true']", root) || $("button", root)).dataset.v;
 
-// ---------- hero seismogram ----------
+// ---------- hero: a real record of the 2025 Dapu earthquake ----------
+const decode8 = (b64) => { const s = atob(b64), a = new Int8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = (s.charCodeAt(i) << 24) >> 24; return a; };
+const DAPU = window.DAPU || null;
+const RECS = DAPU ? DAPU.stations.map((r) => Object.assign({}, r, { lo: decode8(r.mn), hi: decode8(r.mx) })) : [];
 function hero() {
-  const cv = $("#trace"); if (!cv) return;
-  const ctx = cv.getContext("2d"), card = cv.closest(".trace-card");
-  const T = 24, FS = 60, N = T * FS + 1;
-  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
-  const burst = (t, t0, f, a, dec) => { if (t < t0) return 0; const x = t - t0; return a * (1 - Math.exp(-x * 7)) * Math.exp(-x / dec) * (Math.sin(6.283 * f * x) + 0.6 * Math.sin(6.283 * f * 1.43 * x + 1.1) + 0.35 * Math.sin(6.283 * f * 2.1 * x + 2.3)) / 1.95; };
-  const Y = new Float32Array(N);
-  for (let k = 0; k < N; k++) { const t = k / FS; Y[k] = 0.03 * gauss() + burst(t, 9.4, 6.5, 0.24, 2.6) + burst(t, 16.5, 2.3, 1.0, 4.4) + burst(t, 16.5, 4.1, 0.38, 3.2); }
+  const cv = $("#trace"); if (!cv || !RECS.length) return;
+  const st = RECS.find((r) => r.sta === DAPU.hero) || RECS[0];
+  const ctx = cv.getContext("2d"), card = cv.closest(".trace-card"), T = 90, SPEED = 6;
   const items = $$(".trace-events li"), clock = $("#clock");
   let W = 0, H = 0, now = 0, raf = 0;
   const col = (n) => getComputedStyle(card).getPropertyValue(n).trim();
   function draw(t) {
     now = t; ctx.clearRect(0, 0, W, H);
     const cN = col("--hero-n"), cP = col("--hero-p"), cS = col("--hero-s"), cA = col("--hero-a");
-    const xs = (s) => (s / T) * W, mid = H * 0.56, amp = H * 0.4;
+    const xs = (s) => (s / T) * W, mid = H * 0.56, amp = (H * 0.42) / 127;
     ctx.lineWidth = 1; ctx.strokeStyle = "rgba(175,196,212,.25)"; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(W, mid); ctx.stroke();
     ctx.font = "700 13px " + getComputedStyle(document.body).fontFamily;
-    for (const [s, c, lab, low] of [[7.9, cA, "alert", true], [9.4, cP, "P", false], [16.5, cS, "S", false]]) {
+    for (const [s, c, lab, low] of [[DAPU.alert1, cA, "alert", true], [st.tP, cP, "P", false], [st.tS, cS, "S", false]]) {
       if (t < s) continue;
       ctx.strokeStyle = c; ctx.lineWidth = 1.6; ctx.setLineDash(low ? [5, 4] : []);
       ctx.beginPath(); ctx.moveTo(xs(s), 20); ctx.lineTo(xs(s), H - 2); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = c; ctx.fillText(lab, xs(s) + 5, low ? H - 6 : 14);
     }
-    const kmax = Math.min(N - 1, Math.floor(t * FS)); let cur = null; ctx.lineWidth = 1.5;
-    for (let k = 0; k <= kmax; k++) {
-      const s = k / FS, c = s < 9.4 ? cN : s < 16.5 ? cP : cS, x = xs(s), y = mid - Y[k] * amp;
-      if (c !== cur) { if (cur) { ctx.lineTo(x, y); ctx.stroke(); } ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(x, y); cur = c; } else ctx.lineTo(x, y);
+    const b0 = Math.max(0, Math.ceil(-DAPU.t0 * DAPU.rate)), b1 = Math.min(DAPU.n - 1, Math.floor((Math.min(t, T) - DAPU.t0) * DAPU.rate));
+    ctx.lineWidth = 1.1; let cur = null;
+    for (let b = b0; b <= b1; b++) {
+      const s = DAPU.t0 + b / DAPU.rate, c = s < st.tP ? cN : s < st.tS ? cP : cS, x = xs(s), y1 = mid - st.hi[b] * amp;
+      if (c !== cur) { if (cur) ctx.stroke(); ctx.strokeStyle = c; ctx.beginPath(); cur = c; }
+      ctx.moveTo(x, y1); ctx.lineTo(x, Math.max(mid - st.lo[b] * amp, y1 + 1));
     }
     if (cur) ctx.stroke();
     clock.textContent = f1(Math.min(t, T));
@@ -747,7 +779,7 @@ function hero() {
     cancelAnimationFrame(raf);
     if (reduce) { draw(T); return; }
     let t0 = null;
-    const step = (ts) => { if (t0 === null) t0 = ts; const t = (ts - t0) / 1000 * 3; draw(Math.min(t, T)); if (t < T) raf = requestAnimationFrame(step); };
+    const step = (ts) => { if (t0 === null) t0 = ts; const t = ((ts - t0) / 1000) * SPEED; draw(Math.min(t, T)); if (t < T) raf = requestAnimationFrame(step); };
     raf = requestAnimationFrame(step);
   }
   window.addEventListener("resize", resize); resize();
@@ -916,7 +948,7 @@ function timeMachine() {
 function tabs() {
   $$("[role=tablist]").forEach((list) => {
     const ts = $$("[role=tab]", list);
-    const sel = (t) => ts.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1; $("#" + x.getAttribute("aria-controls")).hidden = !on; });
+    const sel = (t) => { ts.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1; $("#" + x.getAttribute("aria-controls")).hidden = !on; }); window.dispatchEvent(new Event("resize")); };
     ts.forEach((t, i) => {
       t.addEventListener("click", () => sel(t));
       t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (!d) return; e.preventDefault(); const n = ts[(i + d + ts.length) % ts.length]; n.focus(); sel(n); });
@@ -995,6 +1027,59 @@ function quiz() {
   render();
 }
 
+// ---------- real records explorer ----------
+function records() {
+  const cv = $("#rec-canvas"); if (!cv || !RECS.length) return;
+  const ctx = cv.getContext("2d"), tIn = $("#rec-t"), out = $("#rec-t-out"), playB = $("#rec-play"), tb = $("#rec-tbody");
+  const rows = RECS.slice().sort((a, b) => a.dist - b.dist), T0 = DAPU.t0, T1 = DAPU.t0 + DAPU.n / DAPU.rate;
+  tb.innerHTML = rows.map((r) => `<tr><td><b>${r.sta}</b></td><td>${Math.round(r.dist)} km</td><td>${f1(r.tP)} s</td><td>${f1(r.tS)} s</td><td class="w">${f1(r.tS - DAPU.alert1)} s</td><td>${Math.round(r.rel * 100)}%</td></tr>`).join("");
+  const trs = $$("tr", tb), fam = () => getComputedStyle(document.body).fontFamily;
+  const L = 74, RM = 12, TOP = 42, BOT = 28;
+  let W = 0, H = 0, now = T1, raf = 0, playing = false, mode = "norm";
+  function draw(t) {
+    now = t; out.textContent = f1(t) + " s"; tIn.value = t;
+    trs.forEach((tr, k) => tr.classList.toggle("hit", t >= rows[k].tS));
+    if (W < 50) return;
+    ctx.clearRect(0, 0, W, H);
+    const X = (s) => L + ((s - T0) / (T1 - T0)) * (W - L - RM), lane = (H - TOP - BOT) / rows.length;
+    ctx.textBaseline = "middle"; ctx.lineWidth = 1; ctx.font = "400 12px " + fam(); ctx.textAlign = "center";
+    const step = W - L - RM < 520 ? 20 : 10; for (let s = 0; s <= T1; s += step) { const x = X(s); ctx.strokeStyle = "rgba(175,196,212,.13)"; ctx.beginPath(); ctx.moveTo(x, TOP - 4); ctx.lineTo(x, H - BOT); ctx.stroke(); ctx.fillStyle = "#AFC4D4"; ctx.fillText(step === 10 || s === 0 ? s + " s" : String(s), x, H - BOT / 2); }
+    const vline = (s, color, dash, label, y) => { const x = X(s); ctx.strokeStyle = color; ctx.setLineDash(dash); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x, TOP - 6); ctx.lineTo(x, H - BOT); ctx.stroke(); ctx.setLineDash([]); ctx.font = "700 12px " + fam(); ctx.fillStyle = color; ctx.textAlign = "left"; ctx.fillText(label, x + 5, y); };
+    vline(DAPU.alert1, "#F2B24C", [6, 4], "alert " + DAPU.alert1 + " s", 12);
+    vline(DAPU.phone, "rgba(242,178,76,.75)", [2, 3], "phones " + DAPU.phone + " s", 29);
+    rows.forEach((r, k) => {
+      const y0 = TOP + lane * (k + 0.5), amp = ((lane * 0.46) / 127) * (mode === "true" ? r.rel : 1);
+      ctx.fillStyle = "rgba(42,157,143,.14)"; ctx.fillRect(X(DAPU.alert1), y0 - lane * 0.46, X(r.tS) - X(DAPU.alert1), lane * 0.92);
+      let cur = null; ctx.lineWidth = 1;
+      for (let b = 0; b < DAPU.n; b++) {
+        const s = T0 + b / DAPU.rate, x = X(s), fut = s > t, c = s < r.tP ? "#8FA6BA" : s < r.tS ? "#6DB5F0" : "#FF7A55", key = c + (fut ? "f" : "p"), y1 = y0 - r.hi[b] * amp;
+        if (key !== cur) { if (cur) ctx.stroke(); ctx.strokeStyle = c; ctx.globalAlpha = fut ? 0.32 : 1; ctx.beginPath(); cur = key; }
+        ctx.moveTo(x, y1); ctx.lineTo(x, Math.max(y0 - r.lo[b] * amp, y1 + 1));
+      }
+      if (cur) ctx.stroke(); ctx.globalAlpha = 1;
+      [[r.tP, "#6DB5F0"], [r.tS, "#FF7A55"]].forEach(([s, c]) => { ctx.strokeStyle = c; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(s), y0 - lane * 0.4); ctx.lineTo(X(s), y0 + lane * 0.4); ctx.stroke(); });
+      ctx.textAlign = "left"; ctx.fillStyle = "#E9F1F7"; ctx.font = "700 13px " + fam(); ctx.fillText(r.sta, 8, y0 - 8);
+      ctx.fillStyle = "#AFC4D4"; ctx.font = "400 12px " + fam(); ctx.fillText(Math.round(r.dist) + " km", 8, y0 + 9);
+    });
+    if (t < T1) { const x = X(t); ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x, TOP - 6); ctx.lineTo(x, H - BOT); ctx.stroke(); }
+  }
+  function resize() { const dpr = Math.min(2, window.devicePixelRatio || 1), r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(now); }
+  function stop() { playing = false; cancelAnimationFrame(raf); playB.textContent = "Play"; }
+  function play() {
+    cancelAnimationFrame(raf);
+    if (reduce) { draw(T1); return; }
+    let t = now >= T1 - 0.05 ? T0 : now, last = null;
+    playing = true; playB.textContent = "Pause";
+    const step = (ts) => { if (last === null) last = ts; t += ((ts - last) / 1000) * 5; last = ts; if (t >= T1) { draw(T1); stop(); return; } draw(t); raf = requestAnimationFrame(step); };
+    raf = requestAnimationFrame(step);
+  }
+  tIn.min = T0; tIn.max = T1;
+  playB.addEventListener("click", () => (playing ? stop() : play()));
+  tIn.addEventListener("input", () => { stop(); draw(+tIn.value); });
+  seg($("#rec-scale"), (v) => { mode = v; draw(now); });
+  window.addEventListener("resize", resize); resize();
+}
+
 // ---------- copy buttons ----------
 function copyBtns() {
   $$("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
@@ -1004,7 +1089,7 @@ function copyBtns() {
   }));
 }
 
-hero(); race(); simulator(); timeMachine(); tabs(); pdCalc(); transformer(); lem(); quiz(); copyBtns();
+hero(); race(); simulator(); timeMachine(); tabs(); records(); pdCalc(); transformer(); lem(); quiz(); copyBtns();
 })();
 </script>
 </body>
