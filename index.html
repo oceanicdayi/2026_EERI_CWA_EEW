@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Racing the Waves: Earthquake Early Warning in Taiwan</title>
+<meta name="description" content="Interactive companion to a CWA Seismological Center talk for the EERI Learning From Earthquakes 2026 Travel Study Program: how Taiwan's earthquake early warning works, how it got faster, three case files and what comes next.">
+<meta property="og:title" content="Racing the Waves: Earthquake Early Warning in Taiwan">
+<meta property="og:description" content="Drop an earthquake on Taiwan and see who gets how many seconds of warning.">
+<meta name="theme-color" content="#0F3B57">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='27' fill='none' stroke='%232B7BB9' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%23E4572E' stroke-width='6'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23E4572E'/%3E%3C/svg%3E">
+<style>
+@font-face{font-family:"Atkinson";src:url("assets/fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Atkinson";src:url("assets/fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Shoulders";src:url("assets/fonts/BigShoulders.ttf") format("truetype");font-weight:100 900;font-display:swap}
+:root{
+  color-scheme:light;
+  --paper:#F4F7F9;--surface:#FFFFFF;--surface-2:#E8EEF2;--ink:#13202C;--ink-2:#4B5A68;--line:#D2DBE2;
+  --ocean:#0F3B57;--on-ocean:#FFFFFF;--link:#1D5F8A;
+  --p:#2B7BB9;--s:#E4572E;--teal:#2A9D8F;
+  --s-ink:#B7411F;--teal-ink:#1D7468;--amber-ink:#8F5E0E;
+  --band:#0E2B40;--band-2:#143852;--on-band:#E9F1F7;--on-band-2:#AFC4D4;--band-line:rgba(233,241,247,.18);
+  --map-sea:#174463;--map-land:#E6EDF2;--map-border:#7D93A6;
+  --i0:#FFFFFF;--i1:#DCF2D8;--i2:#7FCC6E;--i3:#F2DC4A;--i4:#F3A13A;--i5:#E94E3C;--i6:#9C4B3D;--i7:#9A3EA9;
+  --display:"Shoulders","Arial Narrow","Roboto Condensed","Helvetica Neue",system-ui,sans-serif;
+  --body:"Atkinson","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --r-s:8px;--r-m:16px;
+}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--paper:#0C1721;--surface:#13212D;--surface-2:#1A2C3A;--ink:#E6EEF4;--ink-2:#A6B6C3;--line:#283C4C;--ocean:#7DB5DA;--on-ocean:#0C1721;--link:#8CC4EA;--s-ink:#FF8C69;--teal-ink:#5CC9BA;--amber-ink:#F0B354;--band:#0A1E2C;--band-2:#10293B;--map-sea:#123B57;--map-land:#D9E3EA}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.62 var(--body)}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--link);text-underline-offset:.18em}
+:focus-visible{outline:3px solid #E8A33D;outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);color:var(--ink);padding:8px 12px;z-index:100}
+.skip:focus{left:8px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,44px)}
+section{padding:clamp(60px,8vw,108px) 0}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.02;letter-spacing:.004em;margin:0 0 .45em;text-wrap:balance}
+h1{font-size:clamp(2.9rem,6.4vw,5.4rem)}
+h2{font-size:clamp(2.3rem,4.6vw,3.6rem)}
+h3{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:700}
+p{margin:0 0 1em;max-width:66ch}
+.lede{font-size:clamp(1.15rem,1.6vw,1.3rem);color:var(--ink-2)}
+.num{font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.muted{color:var(--ink-2)}
+.small{font-size:.92rem}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem var(--body);padding:12px 20px;border-radius:999px;border:2px solid var(--ocean);color:var(--ocean);background:transparent;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--ocean);color:var(--on-ocean)}
+.btn:hover{filter:brightness(1.1)}
+/* top bar */
+.topbar{position:sticky;top:0;z-index:40;background:var(--paper);background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:28px;min-height:62px;padding-top:env(safe-area-inset-top,0px)}
+.brand{display:flex;align-items:center;gap:10px;font:800 1.5rem var(--display);color:var(--ink);text-decoration:none;white-space:nowrap}
+.brand svg{width:28px;height:28px;flex:none}
+.topbar nav{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar ul{display:flex;gap:20px;list-style:none;margin:0;padding:0 24px 0 0}
+.topbar nav a{display:block;padding:19px 0;color:var(--ink-2);text-decoration:none;font-weight:700;font-size:.97rem;white-space:nowrap}
+.topbar nav a:hover{color:var(--ink)}
+/* hero */
+.hero{padding-top:clamp(36px,6vw,84px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,4.5vw,64px);align-items:center}
+.hero .intro{font-size:1rem;color:var(--ink-2)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.trace-card{--hero-n:#7F9BB4;--hero-p:#6DB5F0;--hero-s:#FF7A55;--hero-a:#F2B24C;background:#0B2233;color:#E9F1F7;border-radius:var(--r-m);padding:22px 22px 18px;box-shadow:0 22px 44px -26px rgba(11,34,51,.7)}
+.trace-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.clock{font-size:clamp(3.2rem,7vw,5.4rem)}
+.clock small{font-size:.36em;margin-left:.12em;color:#AFC4D4}
+.trace-where{font-size:.92rem;color:#AFC4D4;text-align:right;max-width:24ch;margin:0}
+#trace{width:100%;height:170px;display:block;margin:12px 0 8px}
+.trace-events{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.trace-events li{display:flex;gap:12px;align-items:baseline;opacity:.32;transition:opacity .25s}
+.trace-events li.on{opacity:1}
+.trace-events .num{font-size:1.65rem;min-width:3.4ch}
+.trace-events .a .num{color:var(--hero-a)}.trace-events .p .num{color:var(--hero-p)}.trace-events .s .num{color:var(--hero-s)}
+.trace-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:.84rem;color:#AFC4D4}
+.trace-foot button{flex:none;background:transparent;border:1.5px solid #AFC4D4;color:#E9F1F7;border-radius:999px;padding:6px 16px;font:700 .9rem var(--body);cursor:pointer}
+/* shared controls */
+.two{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);gap:clamp(28px,4vw,56px);align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);padding:clamp(18px,2.4vw,28px)}
+.field{margin:0 0 18px}
+.field-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
+.field-row label,.field-row .lab{font-weight:700}
+.field-row output{font-family:var(--display);font-weight:800;font-size:1.55rem;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--ocean);height:28px;margin:0}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:22px;background:var(--surface-2)}
+.seg button{border:0;background:transparent;color:var(--ink);font:700 .95rem var(--body);padding:8px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ocean);color:var(--on-ocean)}
+/* race widget */
+.tl{position:relative;height:100px;margin:22px 6px 4px}
+.tl .track{position:absolute;left:0;right:0;top:44px;height:6px;border-radius:3px;background:var(--surface-2)}
+.tl .warn{position:absolute;top:42px;height:10px;border-radius:5px;background:var(--teal);transition:left .2s,width .2s}
+.tl .warn.late{background:var(--s)}
+.mk{position:absolute;top:0;width:0;height:100%;transition:left .2s}
+.mk i{position:absolute;left:-1px;width:2px;background:currentColor}
+.mk.top i{top:20px;height:30px}.mk.bot i{top:44px;height:30px}
+.mk span{position:absolute;white-space:nowrap;font-weight:700;font-size:.85rem}
+.mk.top span{top:0}.mk.bot span{top:76px}
+.mk.left span{right:5px}.mk.right span{left:5px}.mk.mid span{transform:translateX(-50%)}
+.mk.p{color:var(--p)}.mk.s{color:var(--s-ink)}.mk.a{color:var(--amber-ink)}
+.scale{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-2);margin:0 6px}
+.result{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:20px 0 4px}
+.result .num{font-size:clamp(3rem,7vw,4.6rem);color:var(--teal-ink)}
+.result.none .num{color:var(--s-ink)}
+.times{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.times div{background:var(--surface-2);border-radius:var(--r-s);padding:8px 10px}
+.times dt{font-size:.8rem;color:var(--ink-2);line-height:1.3}.times dd{margin:2px 0 0;font:800 1.4rem var(--display)}
+.advice{font-weight:700;margin:0}
+/* simulator band */
+.band{background:var(--band);color:var(--on-band)}
+.band .lede,.band .muted{color:var(--on-band-2)}
+.band a{color:#9FD0F2}
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3.5vw,48px);align-items:start;margin-top:30px}
+.map-wrap{position:relative;background:var(--map-sea);border-radius:var(--r-m);overflow:hidden}
+#map{display:block;width:100%;height:auto;max-height:80vh;cursor:crosshair;touch-action:manipulation}
+.county{fill:var(--map-land);stroke:var(--map-border);stroke-width:.7;transition:fill .45s ease}
+.county.pws{stroke:#0B1D2B;stroke-width:2.2}
+.front-p{fill:none;stroke:#8CCBFA;stroke-width:2.2;stroke-dasharray:7 6}
+.front-s{fill:rgba(255,122,85,.15);stroke:#FF7A55;stroke-width:2.6}
+.blind{fill:url(#hatch);stroke:#FF5A33;stroke-width:1.6}
+.city{fill:#0E2B40;stroke:#fff;stroke-width:1.4}
+.city-label{font:700 13px var(--body);fill:#0E2B40;paint-order:stroke;stroke:rgba(255,255,255,.88);stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+.epi{fill:#FF5A33;stroke:#fff;stroke-width:1.6}
+.map-clock{position:absolute;right:16px;bottom:10px;color:#fff;font-size:2.8rem;text-shadow:0 2px 10px rgba(0,0,0,.5);pointer-events:none}
+.map-hint{position:absolute;left:16px;bottom:14px;color:#D8E6F0;font-size:.85rem;pointer-events:none;max-width:20ch;line-height:1.35}
+.alert-banner{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:12px;align-items:center;background:#B3261E;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 10px 24px -10px rgba(0,0,0,.6);transform:translateY(-160%);transition:transform .35s ease;pointer-events:none}
+.alert-banner.show{transform:none}
+.alert-banner svg{width:26px;height:26px;flex:none}
+.alert-banner b{display:block;font-size:1rem}.alert-banner span{font-size:.88rem}
+.legend{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;font-size:.85rem;color:var(--on-band-2)}
+.chip{display:inline-block;min-width:2.1em;padding:1px 6px;border-radius:6px;text-align:center;font-weight:700;color:#13202C;font-size:.85rem}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{background:transparent;border:1.5px solid var(--band-line);color:var(--on-band);border-radius:999px;padding:7px 13px;font:700 .92rem var(--body);cursor:pointer}
+.presets button[aria-pressed="true"]{background:var(--on-band);color:var(--band);border-color:var(--on-band)}
+.preset-note{font-size:.95rem;color:var(--on-band-2);min-height:3em;margin:10px 0 18px}
+.band .seg{background:rgba(233,241,247,.1)}
+.band .seg button{color:var(--on-band)}
+.band .seg button[aria-pressed="true"]{background:var(--on-band);color:var(--band)}
+.band input[type=range]{accent-color:#8CCBFA}
+.play-row{display:flex;align-items:center;gap:10px;margin:4px 0 0}
+.play-row button{flex:none;border:0;border-radius:999px;padding:9px 18px;font:700 .95rem var(--body);cursor:pointer;background:var(--on-band);color:var(--band)}
+.play-row button.ghost{background:transparent;color:var(--on-band);border:1.5px solid var(--band-line)}
+.play-row output{font-family:var(--display);font-weight:800;font-size:1.3rem;min-width:4.2ch;text-align:right}
+.summary{background:var(--band-2);border-radius:var(--r-s);padding:12px 14px;font-size:.98rem;margin:16px 0}
+.table-box{max-height:360px;overflow:auto;border-radius:var(--r-s);border:1px solid var(--band-line)}
+table.ct{width:100%;border-collapse:collapse;font-size:.95rem}
+.ct th{position:sticky;top:0;background:var(--band-2);text-align:left;font-size:.82rem;color:var(--on-band-2);padding:8px 10px;font-weight:700}
+.ct td{padding:6px 10px;border-top:1px solid var(--band-line)}
+.ct td.lead{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.ct tr.none td.lead{color:#FFA488}
+.note{font-size:.85rem;color:var(--on-band-2);margin:12px 0 0;max-width:none}
+/* why */
+.why{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,4vw,56px);align-items:center}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0}
+.stat .num{font-size:clamp(2.4rem,4.4vw,3.3rem);color:var(--ocean)}
+.stat p{font-size:.95rem;margin:6px 0 0;color:var(--ink-2)}
+.why figure{margin:0}.why figure img{border-radius:var(--r-s)}
+figcaption{font-size:.88rem;color:var(--ink-2);margin-top:8px}
+.decade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:18px}
+.decade figure{margin:0}
+.decade img{aspect-ratio:16/10;object-fit:cover;border-radius:var(--r-s);width:100%}
+.decade figcaption{color:var(--ink)}
+.decade figcaption b{display:block}
+.decade .cr{display:block;font-size:.78rem;color:var(--ink-2)}
+/* how */
+.steps{list-style:none;padding:0;margin:28px 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
+.steps li{border-top:3px solid var(--ocean);padding-top:12px}
+.steps .num{font-size:2.2rem;color:var(--ocean)}
+.steps b{display:block;font-size:1.1rem;margin:6px 0 4px}
+.steps p{font-size:.95rem;color:var(--ink-2);margin:0}
+.fig{margin:24px 0 48px}
+.fig img,.case figure img,.row img,.tm figure img{border-radius:var(--r-s);border:1px solid var(--line);background:#fff}
+.formula{font-family:var(--display);font-weight:700;font-size:clamp(1.15rem,2vw,1.45rem);background:var(--surface-2);border-radius:var(--r-s);padding:12px 14px;overflow-x:auto;white-space:nowrap;margin:6px 0 0}
+.mres{display:flex;align-items:baseline;gap:12px;margin-top:14px}
+.mres .num{font-size:3.8rem;color:var(--s-ink)}
+.channels{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:1rem}
+.channels th,.channels td{padding:10px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.channels th{font-size:.85rem;color:var(--ink-2)}
+.channels td.d{font:800 1.5rem var(--display);white-space:nowrap}
+.inline-fig{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center}
+.ops{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:22px;align-items:start;margin-top:56px}
+.ops img{border-radius:var(--r-s)}
+/* history */
+.timeline{list-style:none;padding:0;margin:28px 0 56px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;position:relative}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:15px;height:3px;background:var(--line)}
+.timeline li{position:relative;padding-top:40px}
+.timeline li::before{content:"";position:absolute;top:5px;left:0;width:22px;height:22px;border-radius:50%;background:var(--ocean);border:4px solid var(--paper)}
+.timeline li.now::before{background:var(--s)}
+.timeline .yr{font:800 1.6rem var(--display)}
+.timeline .num{display:block;font-size:2.5rem;margin:6px 0;color:var(--s-ink)}
+.timeline li.gray .num{color:var(--ink-2)}.timeline li.blue .num{color:var(--p)}
+.timeline p{font-size:.92rem;color:var(--ink-2);margin:0}
+.tm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr) minmax(0,.85fr);gap:28px;align-items:start;margin-top:14px}
+.tm dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:18px 0}
+.tm dt{color:var(--ink-2)}.tm dd{margin:0;font-weight:700}
+#tm-map{width:100%;height:auto;display:block;background:var(--surface-2);border-radius:var(--r-s)}
+.c2{fill:var(--surface);stroke:var(--map-border);stroke-width:.9}
+.tm-blind{fill:rgba(228,87,46,.24);stroke:var(--s);stroke-width:2.5;transition:r .6s ease}
+.tm-epi{fill:var(--s);stroke:#fff;stroke-width:1.5}
+.tm figure{margin:0}
+/* cases */
+[role=tablist]{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+[role=tab]{border:0;background:none;color:var(--ink-2);font:700 1.05rem var(--body);padding:12px 16px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+[role=tab][aria-selected=true]{color:var(--ink);border-bottom-color:var(--s)}
+.case{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,3.5vw,48px);padding-top:30px}
+.case figure{margin:0}
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0 0 18px}
+.facts dt{color:var(--ink-2)}.facts dd{margin:0;font-weight:700}
+.callout{background:var(--surface-2);border-radius:var(--r-s);padding:14px 16px;margin:12px 0}
+.callout b{display:block;margin-bottom:2px}
+.callout.lesson b{color:var(--teal-ink)}.callout.what b{color:var(--s-ink)}
+.figs2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.seq{padding-left:1.3em;margin:0 0 14px}.seq li{margin-bottom:8px}
+.case-wide{margin-top:28px}
+/* next */
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:48px 0;border-top:1px solid var(--line)}
+.row.first{border-top:0;padding-top:24px}
+.row.flip>:first-child{order:2}
+.bars{display:grid;gap:10px;margin:14px 0}
+.bar{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) 3.4em;gap:10px;align-items:center;font-size:.95rem}
+.bar .t{height:14px;background:var(--surface-2);border-radius:7px;overflow:hidden}
+.bar .f{display:block;height:100%;width:0;border-radius:7px;background:var(--ocean);transition:width .55s ease}
+.bar.hl .f{background:var(--s)}
+.bar .v{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.kv{display:flex;gap:32px;flex-wrap:wrap;margin-top:10px}
+.kv .num{font-size:2.6rem;display:block}
+.kv span.l{font-size:.9rem;color:var(--ink-2)}
+.agents{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.agents li{background:var(--surface-2);border-radius:var(--r-s);padding:10px 14px}
+.agents b{margin-right:6px}
+/* quiz */
+.quiz{max-width:880px}
+.q{border:1px solid var(--line);border-radius:var(--r-m);padding:16px 20px 18px;margin:0 0 16px;background:var(--surface)}
+.q legend{font-weight:700;font-size:1.08rem;padding:0 6px;margin-left:-6px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:var(--r-s);cursor:pointer}
+.opt:hover{background:var(--surface-2)}
+.opt input{margin-top:7px;accent-color:var(--ocean)}
+.opt.right{background:rgba(42,157,143,.18)}.opt.wrong{background:rgba(228,87,46,.16)}
+.fb{margin:8px 0 0;font-size:.98rem}.fb b{margin-right:6px}
+.fb.ok b{color:var(--teal-ink)}.fb.no b{color:var(--s-ink)}
+.score{display:flex;align-items:center;gap:18px;margin:8px 0 22px;flex-wrap:wrap}
+.score .num{font-size:2.8rem}
+/* resources */
+.res{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.code{display:flex;align-items:center;gap:8px;background:#0B2233;color:#E9F1F7;border-radius:var(--r-s);padding:10px 12px;margin:8px 0;font:400 .86rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.code code{white-space:nowrap;overflow-x:auto;flex:1}
+.code button{flex:none;background:transparent;border:1px solid #AFC4D4;color:#E9F1F7;border-radius:6px;padding:4px 10px;font:700 .8rem var(--body);cursor:pointer}
+.refs{font-size:.92rem;color:var(--ink-2);padding-left:1.2em;margin:0}.refs li{margin-bottom:6px}
+footer{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));font-size:.9rem;color:var(--ink-2)}
+@media (max-width:920px){
+  .hero-grid,.two,.sim,.why,.case,.row,.tm,.res,.ops{grid-template-columns:minmax(0,1fr)}
+  .row.flip>:first-child{order:0}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline::before{display:none}
+  .decade{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{font-size:1.06rem}
+  .times{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .decade{grid-template-columns:minmax(0,1fr)}
+  .inline-fig{grid-template-columns:minmax(0,1fr)}
+  .bar{grid-template-columns:minmax(0,9em) minmax(0,1fr) 3.2em;font-size:.88rem}
+  .topbar .wrap{gap:16px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Racing the Waves, back to top"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13.5" fill="none" stroke="#2B7BB9" stroke-width="2.5"/><circle cx="16" cy="16" r="7.5" fill="none" stroke="#E4572E" stroke-width="3"/><circle cx="16" cy="16" r="2.6" fill="#E4572E"/></svg>Racing the Waves</a>
+    <nav aria-label="Sections"><ul>
+      <li><a href="#race">The race</a></li><li><a href="#simulator">Simulator</a></li><li><a href="#why">Why Taiwan</a></li><li><a href="#how">How it works</a></li><li><a href="#history">History</a></li><li><a href="#cases">Case files</a></li><li><a href="#next">What's next</a></li><li><a href="#quiz">Quiz</a></li><li><a href="#resources">Resources</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="intro">Companion site to the CWA Seismological Center talk for the EERI Learning From Earthquakes 2026 Travel Study Program in Taiwan.</p>
+      <h1>Earthquake early warning is a race against the S wave</h1>
+      <p class="lede">Taiwan's Central Weather Administration (CWA) catches the first, gentle P waves, estimates what is coming, and sends alerts that can outrun the damaging S waves. Explore how it works, how it got faster, where it fell short, and where it is heading.</p>
+      <div class="actions"><a class="btn primary" href="#simulator">Try the alert simulator</a><a class="btn" href="#cases">Open the case files</a></div>
+    </div>
+    <figure class="trace-card" style="margin:0">
+      <div class="trace-head">
+        <div class="clock num" aria-hidden="true"><span id="clock">0.0</span><small>s</small></div>
+        <p class="trace-where">2025 Dapu M6.4, seen from Tainan, 45 km from the epicenter</p>
+      </div>
+      <canvas id="trace" aria-label="Animated seismogram: the alert is issued at 7.9 seconds, the P wave reaches Tainan at 9.4 seconds and the S wave at 16.5 seconds" role="img"></canvas>
+      <ol class="trace-events">
+        <li class="a" data-t="7.9"><span class="num">7.9</span><span>CWA issues the alert, before the first P wave even reaches Tainan</span></li>
+        <li class="p" data-t="9.4"><span class="num">9.4</span><span>P wave arrives: weak shaking</span></li>
+        <li class="s" data-t="16.5"><span class="num">16.5</span><span>S wave arrives: strong shaking, 8.6 s after the alert</span></li>
+      </ol>
+      <div class="trace-foot"><span>Synthetic trace. Times follow the observed Dapu travel-time curves.</span><button type="button" id="replay">Replay</button></div>
+    </figure>
+  </div>
+</section>
+
+<section id="race">
+  <div class="wrap two">
+    <div>
+      <h2>The race in one slider</h2>
+      <p>Every earthquake sends out two body waves. P waves travel at about 6 to 7 km/s but shake gently. S waves follow at about 3.5 to 4 km/s and carry most of the damage. Stations near the epicenter catch the P wave, the system estimates location and magnitude, and the alert travels at network speed.</p>
+      <p>Your warning time is the S-wave arrival minus the moment the alert reaches you. Close to the epicenter that number drops to zero: the blind zone.</p>
+      <p class="small muted">Arrival times use the observed 2025 Dapu travel-time curves (P ≈ 2.9 s + d/6.9 km/s, S ≈ 4.5 s + d/3.77 km/s). Alert times are the real first alerts of 2010 Jiaxian, 2016 Meinong and 2025 Dapu.</p>
+    </div>
+    <div class="panel" id="race-widget">
+      <div class="field">
+        <div class="field-row"><label for="race-d">Your distance from the epicenter</label><output id="race-d-out" for="race-d">45 km</output></div>
+        <input type="range" id="race-d" min="0" max="250" step="1" value="45">
+      </div>
+      <div class="field">
+        <div class="field-row"><span class="lab" id="race-era-l">Network generation</span></div>
+        <div class="seg" id="race-era" role="group" aria-labelledby="race-era-l"><button type="button" data-v="2010" aria-pressed="false">2010: 27.0 s</button><button type="button" data-v="2016" aria-pressed="false">2016: 12.0 s</button><button type="button" data-v="2025" aria-pressed="true">2025: 7.9 s</button></div>
+      </div>
+      <div class="field">
+        <div class="field-row"><span class="lab" id="race-ch-l">How the alert reaches you</span></div>
+        <div class="seg" id="race-ch" role="group" aria-labelledby="race-ch-l"><button type="button" data-v="dc" aria-pressed="false">Direct link, 0.8 s</button><button type="button" data-v="pws" aria-pressed="true">Phone, 5.5 s</button><button type="button" data-v="tv" aria-pressed="false">TV, ~15 s</button></div>
+      </div>
+      <div class="tl" aria-hidden="true">
+        <div class="track"></div><div class="warn" id="warn-bar"></div>
+        <div class="mk top left p" id="mk-p"><i></i><span>P wave</span></div>
+        <div class="mk top right s" id="mk-s"><i></i><span>S wave</span></div>
+        <div class="mk bot mid a" id="mk-a"><i></i><span>alert reaches you</span></div>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0 s</span><span>20 s</span><span>40 s</span><span>60 s</span><span>80 s</span></div>
+      <div class="result" id="race-result" aria-live="polite"><span class="num" id="race-big">3.0 s</span><span id="race-verdict">of warning before strong shaking</span></div>
+      <dl class="times">
+        <div><dt>P wave arrives</dt><dd id="rt-p"></dd></div>
+        <div><dt>Alert issued</dt><dd id="rt-i"></dd></div>
+        <div><dt>Alert reaches you</dt><dd id="rt-r"></dd></div>
+        <div><dt>S wave arrives</dt><dd id="rt-s"></dd></div>
+      </dl>
+      <p class="advice" id="race-do"></p>
+    </div>
+  </div>
+</section>
+
+<section id="simulator" class="band">
+  <div class="wrap">
+    <h2>Alert simulator</h2>
+    <p class="lede">Click anywhere on the map, or pick a past earthquake. Watch the P and S fronts spread, see when the alert goes out, and check which counties would get a phone alert.</p>
+    <div class="sim">
+      <div>
+        <div class="map-wrap" id="map-wrap" tabindex="0" aria-label="Map of Taiwan. Click to place an epicenter. With the map focused, arrow keys move the epicenter and Enter replays.">
+          <svg id="map" role="img" aria-label="Taiwan counties with the spreading P and S wave fronts"></svg>
+          <div class="alert-banner" id="alert-banner" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2 1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><div><b>Earthquake alert</b><span id="alert-detail"></span></div></div>
+          <div class="map-hint">Click the map to start your own earthquake</div>
+          <div class="map-clock num" id="map-clock">0.0 s</div>
+        </div>
+        <div class="legend" aria-label="Intensity legend"><span>Predicted intensity:</span><span class="chip" style="background:var(--i0)">0</span><span class="chip" style="background:var(--i1)">1</span><span class="chip" style="background:var(--i2)">2</span><span class="chip" style="background:var(--i3)">3</span><span class="chip" style="background:var(--i4)">4</span><span class="chip" style="background:var(--i5)">5</span><span class="chip" style="background:var(--i6)">6</span><span class="chip" style="background:var(--i7);color:#fff">7</span><span>Thick outline: phone alert</span></div>
+      </div>
+      <div>
+        <h3>Pick an earthquake</h3>
+        <div class="presets" id="sim-presets">
+          <button type="button" data-preset="dapu" aria-pressed="true">2025 Dapu M6.4</button>
+          <button type="button" data-preset="meinong" aria-pressed="false">2016 Meinong M6.6</button>
+          <button type="button" data-preset="hualien" aria-pressed="false">2024 Hualien M7.2</button>
+          <button type="button" data-preset="yilan" aria-pressed="false">2025 off Yilan M7.0</button>
+          <button type="button" data-preset="chichi" aria-pressed="false">Chi-Chi M7.3, today</button>
+        </div>
+        <p class="preset-note" id="preset-note"></p>
+        <div class="field"><div class="field-row"><label for="sim-m">Magnitude</label><output id="sim-m-out" for="sim-m">M6.4</output></div><input type="range" id="sim-m" min="4.5" max="7.6" step="0.1" value="6.4"></div>
+        <div class="field"><div class="field-row"><label for="sim-h">Depth</label><output id="sim-h-out" for="sim-h">15.8 km</output></div><input type="range" id="sim-h" min="5" max="100" step="0.1" value="15.8"></div>
+        <div class="field"><div class="field-row"><span class="lab" id="sim-era-l">Network generation</span></div><div class="seg" id="sim-era" role="group" aria-labelledby="sim-era-l"><button type="button" data-v="2010" aria-pressed="false">2010</button><button type="button" data-v="2016" aria-pressed="false">2016</button><button type="button" data-v="2025" aria-pressed="true">2025</button></div></div>
+        <div class="field"><div class="field-row"><span class="lab" id="sim-ch-l">Alert channel</span></div><div class="seg" id="sim-ch" role="group" aria-labelledby="sim-ch-l"><button type="button" data-v="dc" aria-pressed="false">Direct link</button><button type="button" data-v="pws" aria-pressed="true">Phone</button><button type="button" data-v="tv" aria-pressed="false">TV</button></div></div>
+        <div class="play-row"><button type="button" id="sim-play">Play</button><button type="button" class="ghost" id="sim-end">Show result</button><input type="range" id="sim-t" min="0" max="90" step="0.1" value="0" aria-label="Time since the earthquake began"><output id="sim-t-out" for="sim-t">0.0 s</output></div>
+        <div class="summary" id="sim-summary" aria-live="polite"></div>
+        <div class="table-box"><table class="ct"><thead><tr><th scope="col">County</th><th scope="col">Max intensity</th><th scope="col">Phone alert</th><th scope="col">Warning at county seat</th></tr></thead><tbody id="sim-tbody"></tbody></table></div>
+        <p class="note">Teaching model, not an operational product: one attenuation curve (Chen et al., 2019) without station site factors; alert time = P travel time to the nearest land plus processing calibrated to the real 27.0, 12.0 and 7.9 s alerts; phone alerts follow CWA's rule (M &gt; 5.0 and I &gt; 3, or M &gt; 6.5 and I &gt; 2). Real alerts differ: the real Dapu first alert covered 19 counties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="why">
+      <div>
+        <h2>Why Taiwan invests in early warning</h2>
+        <p>The Philippine Sea Plate and the Eurasian Plate converge at 7 to 8 cm per year, and Taiwan sits in the collision zone. Off the east coast the Philippine Sea Plate dives northward under Eurasia; in the south, Eurasia dives eastward under the Philippine Sea Plate.</p>
+        <div class="stats">
+          <div class="stat"><span class="num">~100</span><p>earthquakes recorded every day</p></div>
+          <div class="stat"><span class="num">~100</span><p>clearly felt earthquakes every year</p></div>
+          <div class="stat"><span class="num">30–40</span><p>years between large, deadly earthquakes</p></div>
+        </div>
+        <p>Since 1900, seven earthquakes have each killed more than 100 people, including the 1935 Hsinchu–Taichung earthquake (3,279 deaths) and the 1999 Chi-Chi earthquake (2,415).</p>
+      </div>
+      <figure><img src="assets/img/tectonics.jpg" alt="Block diagram of the Philippine Sea Plate and Eurasian Plate colliding beneath Taiwan" loading="lazy"><figcaption>Plate setting of Taiwan (CWA).</figcaption></figure>
+    </div>
+    <h3 style="margin-top:56px">A decade of damaging earthquakes</h3>
+    <div class="decade">
+      <figure><img src="assets/img/dmg_2016_meinong.jpg" alt="Collapsed Weiguan building in Tainan after the 2016 Meinong earthquake" loading="lazy"><figcaption><b>2016 Meinong M6.6, intensity 7</b>621 casualties, 749 homes damaged<span class="cr">Photo: Liberty Times</span></figcaption></figure>
+      <figure><img src="assets/img/dmg_2018_hualien.jpg" alt="Tilted Marshal Hotel in Hualien after the 2018 earthquake" loading="lazy"><figcaption><b>2018 Hualien M6.2, intensity 7</b>308 casualties, 195 homes damaged<span class="cr">Photo: CNA</span></figcaption></figure>
+      <figure><img src="assets/img/dmg_2019_hualien.jpg" alt="Firefighters inspecting a building in Taipei after the 2019 Hualien earthquake" loading="lazy"><figcaption><b>2019 Hualien M6.3, intensity 7</b>29 casualties<span class="cr">Photo: Initium Media</span></figcaption></figure>
+      <figure><img src="assets/img/dmg_2022_chishang.jpg" alt="Collapsed railway bridge at Dongli station after the 2022 Chishang earthquake" loading="lazy"><figcaption><b>2022 Chishang M6.8, intensity 6+</b>108 casualties, 34 homes damaged<span class="cr">Photo: MOEA Geological Survey</span></figcaption></figure>
+      <figure><img src="assets/img/dmg_2024_hualien.jpg" alt="The leaning Uranus building in Hualien after the 2024 earthquake" loading="lazy"><figcaption><b>2024 Hualien M7.2, intensity 6+</b>1,069 casualties, 207 homes damaged<span class="cr">Photo: Liberty Times</span></figcaption></figure>
+      <figure><img src="assets/img/dmg_2025_dapu.jpg" alt="Damaged gym ceiling at Nanxi Elementary School after the 2025 Dapu earthquake" loading="lazy"><figcaption><b>2025 Dapu M6.4, intensity 6−</b>1,810 homes damaged<span class="cr">Photo: PTS</span></figcaption></figure>
+    </div>
+    <p class="small muted" style="margin-top:14px">Casualties are deaths plus injuries. Intensities use CWA's scale, where levels 5 and 6 are split into minus and plus.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How the system works</h2>
+    <p class="lede">From the first wiggle to a message on your phone, everything is automatic and updates as more stations report.</p>
+    <ol class="steps">
+      <li><span class="num">1</span><b>Detect</b><p>Pick the P-wave arrival at each station: about 630 real-time stations and 3,000 channels.</p></li>
+      <li><span class="num">2</span><b>Associate</b><p>Group the picks that belong to the same earthquake.</p></li>
+      <li><span class="num">3</span><b>Locate</b><p>Find the epicenter with the effective-epicenter approach or Geiger's method.</p></li>
+      <li><span class="num">4</span><b>Size up</b><p>Estimate magnitude from the first seconds of P-wave displacement (Pd).</p></li>
+      <li><span class="num">5</span><b>Alert</b><p>Predict intensity for every county and send the alerts that meet the thresholds.</p></li>
+    </ol>
+    <figure class="fig"><img src="assets/img/algo_4steps.jpg" alt="Four maps of Taiwan showing station triggers, association, location and predicted intensity" loading="lazy"><figcaption>Triggers, association, location and intensity (Chen et al., 2019).</figcaption></figure>
+    <div class="two">
+      <div>
+        <h3>Be the algorithm: magnitude from Pd</h3>
+        <p>Bigger earthquakes push the ground farther in the first seconds of the P wave. CWA's system turns that peak displacement, corrected for distance, into a magnitude.</p>
+        <div class="panel">
+          <div class="field"><div class="field-row"><label for="pd">Peak initial displacement, Pd</label><output id="pd-out" for="pd">0.10 cm</output></div><input type="range" id="pd" min="-3" max="0" step="0.01" value="-1"></div>
+          <div class="field"><div class="field-row"><label for="pr">Hypocentral distance, R</label><output id="pr-out" for="pr">30 km</output></div><input type="range" id="pr" min="5" max="150" step="1" value="30"></div>
+          <p class="formula" id="pd-formula"></p>
+          <div class="mres"><span class="num" id="pd-m">6.4</span><span>estimated magnitude. The first Dapu alert estimated M6.5.</span></div>
+        </div>
+      </div>
+      <div>
+        <h3>Three ways the alert travels</h3>
+        <table class="channels">
+          <thead><tr><th scope="col">Channel</th><th scope="col">Who gets it and when</th><th scope="col">Delay</th></tr></thead>
+          <tbody>
+            <tr><td><b>Phone alert</b> (cell broadcast)</td><td>Every phone in counties where M &gt; 5.0 and predicted intensity &gt; 3, or M &gt; 6.5 and intensity &gt; 2</td><td class="d">5.5 s</td></tr>
+            <tr><td><b>Television</b></td><td>On-screen alert when M &gt; 5.0 and intensity &gt; 2</td><td class="d">10–20 s</td></tr>
+            <tr><td><b>Direct link</b></td><td>About 3,800 schools, disaster agencies, rail and metro operators, and 15 companies relaying to customers, when M &gt; 4.5 and intensity &gt; 2</td><td class="d">0.8 s</td></tr>
+          </tbody>
+        </table>
+        <div class="inline-fig"><img src="assets/img/pws_message.jpg" alt="Phone screenshot of the national-level earthquake alert sent during the 2025 Dapu earthquake" loading="lazy" style="border-radius:8px"><p class="small muted" style="margin:0">The real phone alert during the 2025 Dapu earthquake at 00:17: drop, cover and hold on, in Chinese and English. Every year on September 21 at 9:21 a.m., all phones receive a national drill alert in memory of Chi-Chi.</p></div>
+      </div>
+    </div>
+    <div class="ops">
+      <div><h3>People and dashboards, 24/7</h3><p>About 60 people work at the Seismological Center. A duty team of about ten covers every hour of the year, three per shift. Grafana dashboards show station health, data latency, ocean-bottom pressure gauges and whether each alert actually went out.</p></div>
+      <figure style="margin:0"><img src="assets/img/ops_desk_release.jpg" alt="CWA earthquake release desk with monitoring screens" loading="lazy"><figcaption>The earthquake release desk.</figcaption></figure>
+      <figure style="margin:0"><img src="assets/img/grafana_eew.jpg" alt="Grafana dashboard showing whether alerts were sent to TV, schools and phones" loading="lazy"><figcaption>Did every alert go out? TV, schools, phones.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="wrap">
+    <h2>25 years of getting faster</h2>
+    <ol class="timeline">
+      <li class="gray"><span class="yr">1999</span><span class="num">102 s</span><p>Chi-Chi M7.3: automatic location, magnitude and shake map. No early warning yet.</p></li>
+      <li><span class="yr">2010</span><span class="num">27.0 s</span><p>Jiaxian M6.3: first alert. Blind zone 86 km, 91 real-time stations.</p></li>
+      <li><span class="yr">2016</span><span class="num">12.0 s</span><p>Meinong M6.6: blind zone 28 km, 149 stations.</p></li>
+      <li class="blue"><span class="yr">2021</span><span class="num">15 s</span><p>Offshore M5.3: cabled ocean-bottom stations cut the alert from 22 s.</p></li>
+      <li><span class="yr">2024</span><span class="num">14 s</span><p>Hualien M7.2: final alert at 14 s, but the magnitude was underestimated and the north got no alert.</p></li>
+      <li class="now"><span class="yr">2025</span><span class="num">7.9 s</span><p>Dapu M6.4: blind zone 12 km, 600+ strong-motion stations.</p></li>
+    </ol>
+    <h3>Time machine: watch the blind zone shrink</h3>
+    <p>Same Dapu epicenter, three generations of the network. The red circle marks where strong shaking arrives before the alert.</p>
+    <div class="tm">
+      <div>
+        <div class="seg" id="tm-era" role="group" aria-label="Network generation"><button type="button" data-v="2010" aria-pressed="false">2010</button><button type="button" data-v="2016" aria-pressed="false">2016</button><button type="button" data-v="2025" aria-pressed="true">2025</button></div>
+        <dl>
+          <dt>Alert time</dt><dd id="tm-alert"></dd>
+          <dt>Blind zone</dt><dd id="tm-blind"></dd>
+          <dt>Stations</dt><dd id="tm-stations"></dd>
+          <dt>Measured in</dt><dd id="tm-quake"></dd>
+        </dl>
+        <p id="tm-inside" aria-live="polite"></p>
+        <p class="small muted">The main driver of the speed-up is station density: the closer the nearest stations, the sooner there are enough P waves to act.</p>
+      </div>
+      <svg id="tm-map" role="img" aria-label="Map of Taiwan with the blind-zone circle around the 2025 Dapu epicenter"></svg>
+      <figure><img id="tm-img" src="assets/img/net_2025.jpg" alt="CWA real-time seismic network in 2025" loading="lazy"><figcaption id="tm-cap">Real-time network, 2025</figcaption></figure>
+    </div>
+    <figure class="fig" style="margin-bottom:0"><img src="assets/img/blindzone_plot.jpg" alt="Travel time versus epicentral distance for the 2025 Dapu earthquake with alert times of three earthquakes" loading="lazy"><figcaption>Observed P (blue) and S (green) arrivals of the 2025 Dapu earthquake. Dashed lines mark the alert times of three damaging earthquakes; where each crosses the S curve sets the blind zone: 86, 28 and 12 km.</figcaption></figure>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <h2>Case files</h2>
+    <p class="lede">One success, one miss and one false alert. All three belong in the story.</p>
+    <div role="tablist" aria-label="Case files">
+      <button role="tab" id="tab-dapu" aria-controls="panel-dapu" aria-selected="true" tabindex="0">2025 Dapu M6.4</button>
+      <button role="tab" id="tab-hualien" aria-controls="panel-hualien" aria-selected="false" tabindex="-1">2024 Hualien M7.2</button>
+      <button role="tab" id="tab-borneo" aria-controls="panel-borneo" aria-selected="false" tabindex="-1">2026 Borneo false alert</button>
+    </div>
+    <div role="tabpanel" id="panel-dapu" aria-labelledby="tab-dapu" tabindex="0">
+      <div class="case">
+        <figure><img src="assets/img/dapu_alarms.jpg" alt="Maps of the first and second alert predictions and the observed intensities, with accuracy matrices" loading="lazy"><figcaption>Predicted intensities at the first (7.9 s) and second (9.0 s) alerts, compared with observations.</figcaption></figure>
+        <div>
+          <h3>The system at its best</h3>
+          <dl class="facts">
+            <dt>When</dt><dd>Jan 21, 2025, 00:17 local time</dd>
+            <dt>Earthquake</dt><dd>ML 6.4, depth 15.8 km, between Chiayi and Tainan</dd>
+            <dt>First alert</dt><dd>7.9 s, estimated M6.5, 19 cities and counties</dd>
+            <dt>Accuracy</dt><dd>90% of station intensities predicted correctly</dd>
+            <dt>Second alert</dt><dd>9.0 s, estimated M6.7, one more county, 83% correct</dd>
+            <dt>Blind zone</dt><dd>About 12 km</dd>
+            <dt>Impact</dt><dd>Intensity 6−, 1,810 homes damaged</dd>
+          </dl>
+          <div class="callout what"><b>What happened</b>Fast and slightly high: over-warning rather than under-warning.</div>
+          <div class="callout lesson"><b>Lesson</b>Inside the 12 km blind zone, protection still depends on drills, building quality and on-site systems.</div>
+        </div>
+      </div>
+      <figure class="case-wide fig"><img src="assets/img/dapu_heatmap.jpg" alt="Heatmap of maximum observed intensity by latitude band over the first 60 seconds, with alert times" loading="lazy"><figcaption>What the island felt, second by second. Rows are 0.1° latitude bands from south (bottom) to north (top); columns are seconds after origin. At the first alert only the epicentral band was shaking hard; northern Taiwan felt nothing for another 20 to 40 s.</figcaption></figure>
+    </div>
+    <div role="tabpanel" id="panel-hualien" aria-labelledby="tab-hualien" tabindex="0" hidden>
+      <div class="case">
+        <figure><img src="assets/img/hualien_intensity_table.jpg" alt="Table of observed intensity per county second by second with the first and second alert times" loading="lazy"><figcaption>Observed intensity per county, second by second. Blue lines are the first and second alerts; the right-hand columns count the seconds at each intensity.</figcaption></figure>
+        <div>
+          <h3>The rupture outran the estimate</h3>
+          <dl class="facts">
+            <dt>When</dt><dd>Apr 3, 2024, 07:58 local time</dd>
+            <dt>Earthquake</dt><dd>ML 7.2, off the Hualien coast</dd>
+            <dt>Final alert</dt><dd>14 s, 12 areas</dd>
+            <dt>No alert</dt><dd>Keelung, Taipei, New Taipei, Taoyuan, Hsinchu City and County, Miaoli</dd>
+            <dt>Shaking</dt><dd>New Taipei and Miaoli reached 5+; Hualien County stayed at 5− or above for 41 s</dd>
+          </dl>
+          <div class="callout what"><b>What happened</b>The point-source estimate used roughly the first 10 s of data, but most of the rupture's moment came later, so the magnitude was underestimated.</div>
+          <div class="callout lesson"><b>Lesson</b>Large ruptures need finite-fault and observed-shaking methods, and damage depends on duration as well as intensity.</div>
+          <div class="figs2"><figure style="margin:0"><img src="assets/img/hualien_momentrate.jpg" alt="Moment-rate function with the short early-warning window shaded" loading="lazy"><figcaption>The EEW window (shaded) saw only the start.</figcaption></figure><figure style="margin:0"><img src="assets/img/hualien_mrt.jpg" alt="Dislocated elevated metro track in New Taipei" loading="lazy"><figcaption>Dislocated elevated metro track, New Taipei.</figcaption></figure></div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" id="panel-borneo" aria-labelledby="tab-borneo" tabindex="0" hidden>
+      <div class="case">
+        <div class="figs2">
+          <figure style="margin:0"><img src="assets/img/borneo_usgs.jpg" alt="USGS event page for the M7.1 earthquake off Kota Belud, Malaysia" loading="lazy"><figcaption>USGS: M7.1, 619.8 km deep.</figcaption></figure>
+          <figure style="margin:0"><img src="assets/img/borneo_app.jpg" alt="CWA early warning app replay showing a phantom epicenter in southern Taiwan" loading="lazy"><figcaption>CWA app replay: the phantom epicenter.</figcaption></figure>
+          <figure style="margin:0"><img src="assets/img/borneo_waveforms.jpg" alt="Teleseismic P waves recorded on Taiwanese stations" loading="lazy"><figcaption>Teleseismic P waves on Taiwan stations.</figcaption></figure>
+          <figure style="margin:0"><img src="assets/img/borneo_jma.jpg" alt="JMA early warning forecast page for a phantom deep event near Ishigaki" loading="lazy"><figcaption>JMA also issued a forecast for a phantom event.</figcaption></figure>
+        </div>
+        <div>
+          <h3>A false alert from 1,800 km away</h3>
+          <ol class="seq">
+            <li><b>00:57:46, Feb 23, 2026.</b> An M7.1 earthquake strikes about 620 km beneath northern Borneo.</li>
+            <li><b>About 3 minutes later.</b> Its P waves reach Taiwan from below, almost at once across many stations.</li>
+            <li><b>01:01:14.</b> The associator sees a local quake: M4.6, 10 km deep, at 22.66°N, 120.80°E.</li>
+            <li><b>Result.</b> M4.6 is above the 4.5 threshold for direct links, so schools got an alert. It is below 5.0, so phones did not.</li>
+          </ol>
+          <div class="callout what"><b>Not only Taiwan</b>Japan's JMA issued a forecast for a phantom deep event near Ishigaki, and Germany's GFZ briefly mislabelled the earthquake.</div>
+          <div class="callout lesson"><b>Lesson</b>Rare, deep, distant earthquakes can mimic local ones. Teleseism checks, cross-checks between algorithms and open communication protect public trust.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <h2>What comes next</h2>
+    <p class="lede">No single algorithm wins every earthquake. CWA now runs several engines side by side and is testing AI at every step, from picking waves to drafting reports.</p>
+    <div class="row first">
+      <figure style="margin:0"><img src="assets/img/eew_architecture.jpg" alt="Diagram of CWA's real-time data feeding several early warning engines into one alert ring" loading="lazy"></figure>
+      <div>
+        <h3>Many algorithms, one alert ring</h3>
+        <p>Four instances of CWA's Earthworm-based eBEAR, the IPFx method, an on-site AI model, and FinDer and the Virtual Seismologist from ETH Zurich's SeisComP all read the same data and write to one alert ring that feeds phones, TV, direct links and apps.</p>
+        <p class="small muted">Time until Taipei was alerted in a replay of the 2024 Hualien earthquake (Song et al., 2025); a shorter bar is faster.</p>
+        <div class="bars">
+          <div class="bar"><span>CWA point source</span><span class="t"><span class="f" style="width:0"></span></span><span class="v">none</span></div>
+          <div class="bar"><span>Virtual Seismologist</span><span class="t"><span class="f" style="width:83%"></span></span><span class="v">25 s</span></div>
+          <div class="bar hl"><span>FinDer (finite fault)</span><span class="t"><span class="f" style="width:63%"></span></span><span class="v">19 s</span></div>
+        </div>
+        <p class="small">FinDer models the rupture as a growing line instead of a point. The price: final alerts come later (25–26 s instead of 14 s), but they cover 16–17 areas instead of 12.</p>
+      </div>
+    </div>
+    <div class="row flip">
+      <figure style="margin:0"><img src="assets/img/onsite_township_map.jpg" alt="Map of township intensities in eastern Taiwan for the 2024 Hualien earthquake" loading="lazy"><figcaption>Predicted township intensities, 2024 Hualien M7.2.</figcaption></figure>
+      <div>
+        <h3>AI on site</h3>
+        <p>A convolutional neural network looks at just 3 seconds of P wave at one station and asks: will the shaking here exceed 80 gal, roughly intensity 5? It doesn't wait for the network, so it helps close to the epicenter and supports township-level alerts (Chiang et al., 2022).</p>
+        <div class="kv"><div><span class="num">15 s</span><span class="l">lead time at a Hualien station in the 2024 M7.2 mainshock</span></div><div><span class="num">~7 s</span><span class="l">to a possible county alert for an M5.5 on Apr 22, 2024</span></div></div>
+        <img src="assets/img/onsite_waveform.jpg" alt="Waveform showing the 3-second P-wave window used by the model and the 15-second lead time" loading="lazy" style="margin-top:18px">
+      </div>
+    </div>
+    <div class="row">
+      <figure style="margin:0"><img src="assets/img/transformer_arch.jpg" alt="Architecture of the Wav2Vec2-style Transformer for observed intensity sequences" loading="lazy"></figure>
+      <div>
+        <h3>Learning from shaking that has already arrived</h3>
+        <p>A Transformer borrowed from speech recognition reads each station's second-by-second observed intensity and predicts the final intensity class. The longer it watches, the better it gets: ideal for extending alerts to distant areas that a point-source estimate missed.</p>
+        <div class="panel">
+          <div class="field"><div class="field-row"><label for="tf-w">Observed window</label><output id="tf-w-out" for="tf-w">20 s</output></div><input type="range" id="tf-w" min="0" max="5" step="1" value="3"></div>
+          <div class="bars">
+            <div class="bar"><span>Recall</span><span class="t"><span class="f" id="tf-rec"></span></span><span class="v" id="tf-rec-v"></span></div>
+            <div class="bar"><span>Precision</span><span class="t"><span class="f" id="tf-pre"></span></span><span class="v" id="tf-pre-v"></span></div>
+            <div class="bar hl"><span>Miss rate</span><span class="t"><span class="f" id="tf-miss"></span></span><span class="v" id="tf-miss-v"></span></div>
+          </div>
+          <div class="kv"><div><span class="num" id="tf-f1"></span><span class="l">alert F1 score</span></div><div><span class="num" id="tf-far"></span><span class="l">false-alarm rate</span></div></div>
+          <p class="small muted" style="margin:10px 0 0">Alert threshold: intensity class 4 or above. Values read from the evaluation charts.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row flip">
+      <figure style="margin:0"><img src="assets/img/lem_arch.jpg" alt="SeisWav2Vec 2.0 architecture with feature encoder, quantization, masking and Transformer encoder" loading="lazy"><figcaption>SeisWav2Vec 2.0 model architecture.</figcaption></figure>
+      <div>
+        <h3>A Large Earthquake Model</h3>
+        <p>Like a language model that learns from unlabeled text, SeisWav2Vec 2.0 learns from unlabeled waveforms through self-supervised, contrastive training, then is fine-tuned for a task such as picking P waves. The payoff shows when labels are scarce.</p>
+        <div class="seg" id="lem-seg" role="group" aria-label="Amount of labeled training data"><button type="button" data-v="full" aria-pressed="true">Full labeled dataset</button><button type="button" data-v="few" aria-pressed="false">Only 0.01% of labels</button></div>
+        <div class="bars" id="lem-bars" aria-live="polite"></div>
+        <p class="small muted">P-wave picking F1 on the test set. Labeled data: 1.42 million CWASN traces and 98,665 TSMIP traces.</p>
+      </div>
+    </div>
+    <div class="row">
+      <figure style="margin:0"><img src="assets/img/llm_post.jpg" alt="CWA public post asking whether AI can deliver precise earthquake early warning" loading="lazy" style="max-width:440px"><figcaption>CWA public post, May 22, 2025.</figcaption></figure>
+      <div>
+        <h3>LLMs and AI agents</h3>
+        <p>In an experiment, an LLM read the second-by-second intensity maps and decided whether to alert: no alert for an M4.0 in Taitung, an alert for 13 counties in the Dapu earthquake. It is still research. The vision is a team of AI agents supporting the duty seismologist:</p>
+        <ul class="agents">
+          <li><b>Station health:</b>watches outages and latency and opens repair tickets.</li>
+          <li><b>Event check:</b>compares eBEAR, FinDer and AI results and flags conflicts, such as a distant teleseism.</li>
+          <li><b>History:</b>finds similar past earthquakes in seconds.</li>
+          <li><b>Communication:</b>drafts bilingual reports and press briefings.</li>
+        </ul>
+        <p>Humans stay in the loop for every public message.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap quiz">
+    <h2>Test yourself</h2>
+    <p class="lede">Six questions from the talk. Pick an answer to see why.</p>
+    <div class="score"><span class="num" id="quiz-score">0 / 6</span><span id="quiz-status" class="muted" aria-live="polite"></span><button type="button" class="btn" id="quiz-reset">Start over</button></div>
+    <div id="quiz-box"></div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="wrap">
+    <h2>Data, code and further reading</h2>
+    <div class="res">
+      <div>
+        <h3>Open data</h3>
+        <p>Waveforms, the earthquake catalog and geophysical data are available from CWA's Geophysical Database Management System at <a href="https://gdms.cwa.gov.tw">gdms.cwa.gov.tw</a>. Continuous waveforms appear about 15 minutes after real time.</p>
+        <img src="assets/img/gdms_banner.jpg" alt="Banner of the CWA Taiwan Geophysical Database Management System" loading="lazy" style="border-radius:8px">
+      </div>
+      <div>
+        <h3>Run the engines</h3>
+        <p>Replay earthquakes on your own computer with CWA's Earthworm-based EEW system or with SeisComP.</p>
+        <div class="code"><code>docker pull cwadayi/earthworm_ubuntu22.04_eew:v1</code><button type="button" data-copy="docker pull cwadayi/earthworm_ubuntu22.04_eew:v1">Copy</button></div>
+        <div class="code"><code>docker pull cwadayi/seiscomp_ubuntu22.04</code><button type="button" data-copy="docker pull cwadayi/seiscomp_ubuntu22.04">Copy</button></div>
+        <p class="small">Images on Docker Hub: <a href="https://hub.docker.com/r/cwadayi/earthworm_ubuntu22.04_eew">earthworm_ubuntu22.04_eew</a> and <a href="https://hub.docker.com/r/cwadayi/seiscomp_ubuntu22.04">seiscomp_ubuntu22.04</a>.</p>
+      </div>
+      <div>
+        <h3>Studies cited</h3>
+        <ol class="refs">
+          <li>Wu et al. (2000), Seismological Research Letters: the rapid reporting system during Chi-Chi.</li>
+          <li>Wu et al. (2011): the 2010 Jiaxian earthquake.</li>
+          <li>Kanamori et al. (2017): the 2016 Meinong earthquake.</li>
+          <li>Chen et al. (2019): magnitude and intensity estimation for CWA's EEW.</li>
+          <li>Wu et al. (2021): CWA's EEW data flow and channels.</li>
+          <li>Chiang et al. (2022): on-site deep learning for strong shaking.</li>
+          <li>Yamada and Chen (2022): the IPFx method.</li>
+          <li>Song et al. (2025): FinDer and VS online tests in Taiwan.</li>
+          <li>Su et al. (2025): the 2025 Dapu earthquake.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="max-width:none">Built for the EERI Learning From Earthquakes 2026 Travel Study Program in Taiwan, October 18–24, 2026. Content from CWA Seismological Center presentations (Da-Yi Chen, Guan-Yi Song, Yu-Hsuan Chang). Figures: CWA and the cited studies; photos credited where shown. County boundaries: g0v twgeojson. Fonts: Atkinson Hyperlegible and Big Shoulders Display (SIL Open Font License). The race slider and simulator are simplified teaching models, not operational outputs.</p>
+  </div>
+</footer>
+
+<noscript><p style="text-align:center;padding:12px">The interactive parts of this page need JavaScript; the text and figures work without it.</p></noscript>
+<script src="assets/taiwan.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const f1 = (x) => (Math.round(x * 10) / 10).toFixed(1);
+const KM = 111.195;
+// toy travel times, calibrated on the observed 2025 Dapu curves
+const VP = 6.9, VS = 3.77, VP0 = 5.45, VS0 = 3.5;
+const tP = (d, h) => h / VP0 + d / VP;
+const tS = (d, h) => h / VS0 + d / VS;
+const ERA = { "2010": 24.1, "2016": 9.1, "2025": 5.0 }; // processing after P reaches land; gives 27.0 / 12.0 / 7.9 s for Dapu
+const CH = { dc: { delay: 0.8, get: "Direct links get it" }, pws: { delay: 5.5, get: "Phones get it" }, tv: { delay: 15, get: "TV viewers get it" } };
+const TH = [0.8, 2.5, 8, 25, 80, 250, 400];
+const pga = (M, r) => 1.657 * Math.exp(1.533 * M) * Math.pow(Math.max(r, 3), -1.607);
+const inten = (p) => { let i = 0; while (i < TH.length && p >= TH[i]) i++; return i; };
+const dkm = (la1, lo1, la2, lo2) => Math.hypot((lo2 - lo1) * Math.cos((la1 + la2) * Math.PI / 360) * KM, (la2 - la1) * KM);
+const NS = "http://www.w3.org/2000/svg";
+const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const countyPath = (c, X, Y) => c.r.map((ring) => { let s = ""; for (let i = 0; i < ring.length; i += 2) s += (i ? "L" : "M") + X(ring[i]).toFixed(1) + " " + Y(ring[i + 1]).toFixed(1); return s + "Z"; }).join("");
+const star = (r) => { let s = ""; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r; s += (i ? "L" : "M") + (rr * Math.cos(a)).toFixed(2) + " " + (rr * Math.sin(a)).toFixed(2); } return s + "Z"; };
+function seg(root, onChange) {
+  const bs = $$("button", root);
+  bs.forEach((b) => b.addEventListener("click", () => { bs.forEach((x) => x.setAttribute("aria-pressed", String(x === b))); onChange(b.dataset.v); }));
+}
+const segVal = (root) => ($("button[aria-pressed='true']", root) || $("button", root)).dataset.v;
+
+// ---------- hero seismogram ----------
+function hero() {
+  const cv = $("#trace"); if (!cv) return;
+  const ctx = cv.getContext("2d"), card = cv.closest(".trace-card");
+  const T = 24, FS = 60, N = T * FS + 1;
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const burst = (t, t0, f, a, dec) => { if (t < t0) return 0; const x = t - t0; return a * (1 - Math.exp(-x * 7)) * Math.exp(-x / dec) * (Math.sin(6.283 * f * x) + 0.6 * Math.sin(6.283 * f * 1.43 * x + 1.1) + 0.35 * Math.sin(6.283 * f * 2.1 * x + 2.3)) / 1.95; };
+  const Y = new Float32Array(N);
+  for (let k = 0; k < N; k++) { const t = k / FS; Y[k] = 0.03 * gauss() + burst(t, 9.4, 6.5, 0.24, 2.6) + burst(t, 16.5, 2.3, 1.0, 4.4) + burst(t, 16.5, 4.1, 0.38, 3.2); }
+  const items = $$(".trace-events li"), clock = $("#clock");
+  let W = 0, H = 0, now = 0, raf = 0;
+  const col = (n) => getComputedStyle(card).getPropertyValue(n).trim();
+  function draw(t) {
+    now = t; ctx.clearRect(0, 0, W, H);
+    const cN = col("--hero-n"), cP = col("--hero-p"), cS = col("--hero-s"), cA = col("--hero-a");
+    const xs = (s) => (s / T) * W, mid = H * 0.56, amp = H * 0.4;
+    ctx.lineWidth = 1; ctx.strokeStyle = "rgba(175,196,212,.25)"; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(W, mid); ctx.stroke();
+    ctx.font = "700 13px " + getComputedStyle(document.body).fontFamily;
+    for (const [s, c, lab, low] of [[7.9, cA, "alert", true], [9.4, cP, "P", false], [16.5, cS, "S", false]]) {
+      if (t < s) continue;
+      ctx.strokeStyle = c; ctx.lineWidth = 1.6; ctx.setLineDash(low ? [5, 4] : []);
+      ctx.beginPath(); ctx.moveTo(xs(s), 20); ctx.lineTo(xs(s), H - 2); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = c; ctx.fillText(lab, xs(s) + 5, low ? H - 6 : 14);
+    }
+    const kmax = Math.min(N - 1, Math.floor(t * FS)); let cur = null; ctx.lineWidth = 1.5;
+    for (let k = 0; k <= kmax; k++) {
+      const s = k / FS, c = s < 9.4 ? cN : s < 16.5 ? cP : cS, x = xs(s), y = mid - Y[k] * amp;
+      if (c !== cur) { if (cur) { ctx.lineTo(x, y); ctx.stroke(); } ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(x, y); cur = c; } else ctx.lineTo(x, y);
+    }
+    if (cur) ctx.stroke();
+    clock.textContent = f1(Math.min(t, T));
+    items.forEach((li) => li.classList.toggle("on", t >= +li.dataset.t));
+  }
+  function resize() { const dpr = Math.min(2, window.devicePixelRatio || 1), r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(now); }
+  function play() {
+    cancelAnimationFrame(raf);
+    if (reduce) { draw(T); return; }
+    let t0 = null;
+    const step = (ts) => { if (t0 === null) t0 = ts; const t = (ts - t0) / 1000 * 3; draw(Math.min(t, T)); if (t < T) raf = requestAnimationFrame(step); };
+    raf = requestAnimationFrame(step);
+  }
+  window.addEventListener("resize", resize); resize();
+  $("#replay").addEventListener("click", play);
+  const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { play(); io.disconnect(); } }, { threshold: 0.3 });
+  io.observe(cv);
+}
+
+// ---------- the race ----------
+function advice(w) {
+  if (w <= 0) return "No time for a warning here. This is why drills matter: drop, cover and hold on as soon as you feel shaking.";
+  if (w < 3) return "Just enough to drop, cover and hold on.";
+  if (w < 10) return "Time to take cover away from windows. Elevators can stop at the nearest floor and surgeons can pause.";
+  if (w < 30) return "Trains can start braking, factories can pause sensitive processes and classrooms can shelter.";
+  return "Plenty of time to protect yourself while automatic systems secure gas, power and production lines.";
+}
+function race() {
+  const d = $("#race-d"); if (!d) return;
+  const era = $("#race-era"), ch = $("#race-ch"), H0 = 15.8, SC = 80;
+  const pos = (t) => Math.max(0, Math.min(100, t / SC * 100));
+  function upd() {
+    const dist = +d.value, p = tP(dist, H0), s = tS(dist, H0), iss = tP(0, H0) + ERA[segVal(era)], rec = iss + CH[segVal(ch)].delay, w = s - rec;
+    $("#race-d-out").textContent = dist + " km";
+    $("#mk-p").style.left = pos(p) + "%"; $("#mk-s").style.left = pos(s) + "%"; $("#mk-a").style.left = pos(rec) + "%";
+    const bar = $("#warn-bar"), a = Math.min(rec, s), b = Math.max(rec, s);
+    bar.style.left = pos(a) + "%"; bar.style.width = (pos(b) - pos(a)) + "%"; bar.classList.toggle("late", w <= 0);
+    $("#race-result").classList.toggle("none", w <= 0);
+    $("#race-big").textContent = w > 0 ? f1(w) + " s" : "0 s";
+    $("#race-verdict").textContent = w > 0 ? "of warning before strong shaking" : "Inside the blind zone: shaking arrives " + f1(-w) + " s before the alert";
+    $("#rt-p").textContent = f1(p) + " s"; $("#rt-i").textContent = f1(iss) + " s"; $("#rt-r").textContent = f1(rec) + " s"; $("#rt-s").textContent = f1(s) + " s";
+    $("#race-do").textContent = advice(w);
+  }
+  d.addEventListener("input", upd); seg(era, upd); seg(ch, upd); upd();
+}
+
+// ---------- simulator ----------
+function simulator() {
+  const TW = window.TW, svg = $("#map"); if (!TW || !svg) return;
+  const P = TW.proj, X = (lon) => (lon - P.lon0) * P.kx, Yy = (lat) => (P.latTop - lat) * P.ky, PX = P.ky / KM;
+  svg.setAttribute("viewBox", `0 0 ${P.w} ${P.h}`);
+  const defs = mk("defs", {}, svg);
+  const pat = mk("pattern", { id: "hatch", width: 9, height: 9, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+  mk("rect", { width: 9, height: 9, fill: "rgba(255,90,51,.22)" }, pat);
+  mk("line", { x1: 0, y1: 0, x2: 0, y2: 9, stroke: "#FF5A33", "stroke-width": 3 }, pat);
+  const gC = mk("g", {}, svg), gF = mk("g", {}, svg), gL = mk("g", {}, svg), gE = mk("g", {}, svg);
+  TW.counties.forEach((c) => { c.el = mk("path", { d: countyPath(c, X, Yy), class: "county" }, gC); mk("title", {}, c.el).textContent = c.n; });
+  const cB = mk("circle", { class: "blind", r: 0 }, gF), cS = mk("circle", { class: "front-s", r: 0 }, gF), cP = mk("circle", { class: "front-p", r: 0 }, gF);
+  const byName = Object.fromEntries(TW.counties.map((c) => [c.n, c]));
+  [["Taipei City", "Taipei", 1], ["Hsinchu City", "Hsinchu", -1], ["Taichung City", "Taichung", -1], ["Chiayi City", "Chiayi", -1], ["Tainan City", "Tainan", -1], ["Kaohsiung City", "Kaohsiung", -1], ["Yilan County", "Yilan", 1], ["Hualien County", "Hualien", 1], ["Taitung County", "Taitung", 1], ["Penghu County", "Penghu", 1]].forEach(([n, lab, side]) => {
+    const c = byName[n]; if (!c) return; const x = X(c.seat[1]), y = Yy(c.seat[0]);
+    mk("circle", { class: "city", cx: x.toFixed(1), cy: y.toFixed(1), r: 3.6 }, gL);
+    mk("text", { class: "city-label", x: (x + side * 7).toFixed(1), y: (y + 4).toFixed(1), "text-anchor": side > 0 ? "start" : "end" }, gL).textContent = lab;
+  });
+  const epi = mk("path", { class: "epi", d: star(11) }, gE);
+  const PRE = {
+    dapu: { lat: 23.22, lon: 120.55, h: 15.8, M: 6.4, note: "Real event: first alert at 7.9 s with an estimated M6.5, covering 19 cities and counties." },
+    meinong: { lat: 22.92, lon: 120.54, h: 14.6, M: 6.6, note: "Real event: alert at 12.0 s with the 2016 network. Switch the network to 2016 to compare." },
+    hualien: { lat: 23.77, lon: 121.67, h: 15.5, M: 7.2, note: "Uses the final magnitude. In reality the early estimate was too low and seven northern areas got no alert (see the case files)." },
+    yilan: { lat: 24.69, lon: 122.08, h: 72.8, M: 7.0, note: "Deep (72.8 km) and offshore: P waves need longer to reach land stations, so the alert comes later." },
+    chichi: { lat: 23.85, lon: 120.82, h: 8.0, M: 7.3, note: "What if Chi-Chi struck today? In 1999 the first automatic report took 102 s." },
+  };
+  const st = { lat: 23.22, lon: 120.55, h: 15.8, M: 6.4, t: 0 };
+  const mIn = $("#sim-m"), hIn = $("#sim-h"), eraSeg = $("#sim-era"), chSeg = $("#sim-ch"), tIn = $("#sim-t"), playB = $("#sim-play");
+  const tbody = $("#sim-tbody"), summary = $("#sim-summary"), banner = $("#alert-banner"), clock = $("#map-clock"), note = $("#preset-note"), pBtns = $$("#sim-presets button");
+  let R = null, raf = 0, playing = false;
+  const inside = (c, lat, lon) => { let inn = false; for (const ring of c.r) for (let i = 0, j = ring.length - 2; i < ring.length; j = i, i += 2) { const xi = ring[i], yi = ring[i + 1], xj = ring[j], yj = ring[j + 1]; if ((yi > lat) !== (yj > lat) && lon < (xj - xi) * (lat - yi) / (yj - yi) + xi) inn = !inn; } return inn; };
+  const minD = (c, lat, lon) => { if (inside(c, lat, lon)) return 0; let m = Infinity; for (const ring of c.r) for (let i = 0; i < ring.length; i += 2) { const v = dkm(lat, lon, ring[i + 1], ring[i]); if (v < m) m = v; } return m; };
+  function compute() {
+    const { lat, lon, h, M } = st, era = segVal(eraSeg), ch = segVal(chSeg);
+    let dLand = Infinity;
+    const rows = TW.counties.map((c) => {
+      const dm = minD(c, lat, lon); if (dm < dLand) dLand = dm;
+      const I = inten(pga(M, Math.hypot(dm, h)));
+      return { c, I, pws: (M > 5.0 && I > 3) || (M > 6.5 && I > 2), ds: dkm(lat, lon, c.seat[0], c.seat[1]) };
+    });
+    const iss = tP(dLand, h) + ERA[era], rec = iss + CH[ch].delay, blind = Math.max(0, rec - h / VS0) * VS;
+    rows.forEach((r) => (r.lead = tS(r.ds, h) - rec));
+    rows.sort((a, b) => a.ds - b.ds);
+    const near = rows.filter((r) => r.ds < 330).map((r) => tS(r.ds, h));
+    const tEnd = Math.min(120, Math.max(rec + 6, ...near) + 3);
+    R = { iss, rec, blind, rows, tEnd };
+    tIn.max = Math.ceil(tEnd);
+    const n = rows.filter((r) => r.pws).length;
+    tbody.innerHTML = rows.map((r) => `<tr class="${r.lead > 0 ? "" : "none"}"><td>${r.c.n}</td><td><span class="chip" style="background:var(--i${r.I})${r.I === 7 ? ";color:#fff" : ""}">${r.I}</span></td><td>${r.pws ? "Yes" : "No"}</td><td class="lead">${r.lead > 0 ? f1(r.lead) + " s" : "none"}</td></tr>`).join("");
+    summary.innerHTML = `Alert issued <b>${f1(iss)} s</b> after the rupture began: P waves reach the nearest land at ${f1(tP(dLand, h))} s, plus ${ERA[era].toFixed(1)} s of processing with the ${era} network. ${CH[ch].get} at <b>${f1(rec)} s</b>. Blind zone: <b>${Math.round(blind)} km</b>. Phone alerts under CWA's rule: <b>${n} of ${rows.length}</b> counties.`;
+    $("#alert-detail").textContent = ` Estimated M${M.toFixed(1)}, received ${f1(rec)} s after the rupture began`;
+  }
+  function frame(t) {
+    st.t = t; const h = st.h;
+    cP.setAttribute("r", (Math.max(0, t - h / VP0) * VP * PX).toFixed(1));
+    cS.setAttribute("r", (Math.max(0, t - h / VS0) * VS * PX).toFixed(1));
+    const al = t >= R.iss;
+    R.rows.forEach((r) => { r.c.el.style.fill = al ? `var(--i${r.I})` : ""; r.c.el.classList.toggle("pws", al && r.pws); });
+    cB.setAttribute("r", t >= R.rec ? (R.blind * PX).toFixed(1) : 0);
+    banner.classList.toggle("show", t >= R.rec);
+    clock.textContent = f1(t) + " s";
+    tIn.value = t; $("#sim-t-out").textContent = f1(t) + " s";
+  }
+  function place() { const x = X(st.lon).toFixed(1), y = Yy(st.lat).toFixed(1); [cP, cS, cB].forEach((c) => { c.setAttribute("cx", x); c.setAttribute("cy", y); }); epi.setAttribute("transform", `translate(${x} ${y})`); }
+  function stop() { playing = false; cancelAnimationFrame(raf); playB.textContent = "Play"; }
+  function play(from) {
+    cancelAnimationFrame(raf);
+    if (reduce) { frame(R.tEnd); return; }
+    playing = true; playB.textContent = "Pause";
+    let t = from, last = null;
+    const step = (ts) => { if (last === null) last = ts; t += (ts - last) / 1000 * 4; last = ts; if (t >= R.tEnd) { frame(R.tEnd); stop(); return; } frame(t); raf = requestAnimationFrame(step); };
+    raf = requestAnimationFrame(step);
+  }
+  function restart(auto) { stop(); place(); compute(); frame(0); if (auto) play(0); }
+  function sync() { mIn.value = st.M; hIn.value = st.h; $("#sim-m-out").textContent = "M" + st.M.toFixed(1); $("#sim-h-out").textContent = (Math.round(st.h * 10) / 10) + " km"; }
+  function preset(k, auto) { const p = PRE[k]; Object.assign(st, { lat: p.lat, lon: p.lon, h: p.h, M: p.M }); pBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.preset === k))); note.textContent = p.note; sync(); restart(auto); }
+  playB.addEventListener("click", () => (playing ? stop() : play(st.t >= R.tEnd - 0.05 ? 0 : st.t)));
+  $("#sim-end").addEventListener("click", () => { stop(); frame(R.tEnd); });
+  tIn.addEventListener("input", () => { stop(); frame(+tIn.value); });
+  mIn.addEventListener("input", () => { st.M = +mIn.value; sync(); compute(); frame(st.t); });
+  hIn.addEventListener("input", () => { st.h = +hIn.value; sync(); compute(); frame(st.t); });
+  seg(eraSeg, () => { compute(); frame(st.t); });
+  seg(chSeg, () => { compute(); frame(st.t); });
+  pBtns.forEach((b) => b.addEventListener("click", () => preset(b.dataset.preset, true)));
+  svg.addEventListener("click", (e) => {
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+    st.lon = P.lon0 + q.x / P.kx; st.lat = P.latTop - q.y / P.ky;
+    pBtns.forEach((b) => b.setAttribute("aria-pressed", "false"));
+    note.textContent = `Your earthquake: ${st.lat.toFixed(2)}°N, ${st.lon.toFixed(2)}°E. Adjust magnitude and depth, then press Play.`;
+    restart(true);
+  });
+  $("#map-wrap").addEventListener("keydown", (e) => {
+    const s = 0.05;
+    if (e.key === "ArrowUp") st.lat += s; else if (e.key === "ArrowDown") st.lat -= s; else if (e.key === "ArrowLeft") st.lon -= s; else if (e.key === "ArrowRight") st.lon += s;
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(0); return; } else return;
+    e.preventDefault(); pBtns.forEach((b) => b.setAttribute("aria-pressed", "false")); restart(false);
+  });
+  preset("dapu", false);
+  const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { play(0); io.disconnect(); } }, { threshold: 0.35 });
+  io.observe(svg);
+}
+
+// ---------- time machine ----------
+function timeMachine() {
+  const TW = window.TW, svg = $("#tm-map"); if (!TW || !svg) return;
+  const P = TW.proj, X = (lon) => (lon - P.lon0) * P.kx, Yy = (lat) => (P.latTop - lat) * P.ky, PX = P.ky / KM;
+  const x0 = X(119.6), y0 = Yy(25.4), w = X(122.15) - x0, h = Yy(21.85) - y0;
+  svg.setAttribute("viewBox", `${x0.toFixed(0)} ${y0.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}`);
+  const g = mk("g", {}, svg);
+  TW.counties.forEach((c) => mk("path", { d: countyPath(c, X, Yy), class: "c2" }, g));
+  const E = [23.22, 120.55], ex = X(E[1]).toFixed(1), ey = Yy(E[0]).toFixed(1);
+  const circ = mk("circle", { cx: ex, cy: ey, r: 0, class: "tm-blind" }, svg);
+  mk("path", { class: "tm-epi", d: star(10), transform: `translate(${ex} ${ey})` }, svg);
+  const D = {
+    "2010": { a: "27.0 s", b: 86, s: "91 real-time stations", q: "2010 Jiaxian M6.3" },
+    "2016": { a: "12.0 s", b: 28, s: "149 real-time stations", q: "2016 Meinong M6.6" },
+    "2025": { a: "7.9 s", b: 12, s: "603 strong-motion, 179 velocity, 9 ocean-bottom", q: "2025 Dapu M6.4" },
+  };
+  function upd(k) {
+    const d = D[k]; circ.setAttribute("r", (d.b * PX).toFixed(1));
+    $("#tm-alert").textContent = d.a; $("#tm-blind").textContent = d.b + " km"; $("#tm-stations").textContent = d.s; $("#tm-quake").textContent = d.q;
+    const img = $("#tm-img"); img.src = `assets/img/net_${k}.jpg`; img.alt = `CWA real-time seismic network in ${k}`; $("#tm-cap").textContent = `Real-time network, ${k}`;
+    const ins = TW.counties.filter((c) => dkm(E[0], E[1], c.seat[0], c.seat[1]) <= d.b).map((c) => c.n);
+    $("#tm-inside").textContent = ins.length ? `County seats inside the blind zone: ${ins.join(", ")}.` : "No county seat is inside the blind zone; only the area around the epicenter is.";
+  }
+  seg($("#tm-era"), upd); upd("2025");
+}
+
+// ---------- tabs ----------
+function tabs() {
+  $$("[role=tablist]").forEach((list) => {
+    const ts = $$("[role=tab]", list);
+    const sel = (t) => ts.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1; $("#" + x.getAttribute("aria-controls")).hidden = !on; });
+    ts.forEach((t, i) => {
+      t.addEventListener("click", () => sel(t));
+      t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (!d) return; e.preventDefault(); const n = ts[(i + d + ts.length) % ts.length]; n.focus(); sel(n); });
+    });
+  });
+}
+
+// ---------- Pd calculator ----------
+function pdCalc() {
+  const pd = $("#pd"), pr = $("#pr"); if (!pd) return;
+  function upd() {
+    const Pd = Math.pow(10, +pd.value), R = +pr.value, M = 5.067 + 1.281 * Math.log10(Pd) + 1.76 * Math.log10(R);
+    $("#pd-out").textContent = (Pd < 0.01 ? Pd.toFixed(4) : Pd < 0.1 ? Pd.toFixed(3) : Pd.toFixed(2)) + " cm";
+    $("#pr-out").textContent = R + " km";
+    $("#pd-formula").textContent = `M = 5.067 + 1.281 log₁₀(${Pd.toPrecision(2)}) + 1.760 log₁₀(${R}) = ${M.toFixed(2)}`;
+    $("#pd-m").textContent = M.toFixed(1);
+  }
+  pd.addEventListener("input", upd); pr.addEventListener("input", upd); upd();
+}
+
+// ---------- observed-intensity Transformer ----------
+function transformer() {
+  const r = $("#tf-w"); if (!r) return;
+  const D = [[5, 10.0, 74.5, 90.0, 0.178, 0.31], [10, 25.8, 69.0, 74.3, 0.374, 1.05], [15, 34.9, 58.4, 65.2, 0.436, 2.25], [20, 51.0, 93.4, 49.0, 0.66, 0.33], [25, 64.0, 95.1, 36.0, 0.765, 0.3], [30, 63.3, 96.8, 36.7, 0.766, 0.19]];
+  function upd() {
+    const [w, rec, pre, miss, f, far] = D[+r.value];
+    $("#tf-w-out").textContent = w + " s";
+    [["rec", rec], ["pre", pre], ["miss", miss]].forEach(([k, v]) => { $("#tf-" + k).style.width = v + "%"; $("#tf-" + k + "-v").textContent = Math.round(v) + "%"; });
+    $("#tf-f1").textContent = f.toFixed(2); $("#tf-far").textContent = far.toFixed(2) + "%";
+  }
+  r.addEventListener("input", upd); upd();
+}
+
+// ---------- Large Earthquake Model ----------
+function lem() {
+  const box = $("#lem-bars"), sg = $("#lem-seg"); if (!box) return;
+  const D = {
+    full: [["EQTransformer", 0.942], ["PhaseNet", 0.925], ["SeisWav2Vec 2.0, frozen", 0.938], ["SeisWav2Vec 2.0, weighted sum", 0.946], ["SeisWav2Vec 2.0, fine-tuned", 0.957]],
+    few: [["EQTransformer", 0.367], ["PhaseNet", 0.313], ["SeisWav2Vec 2.0, frozen", 0.917], ["SeisWav2Vec 2.0, weighted sum", 0.928], ["SeisWav2Vec 2.0, fine-tuned", 0.929]],
+  };
+  box.innerHTML = D.full.map(([n], i) => `<div class="bar${i > 1 ? " hl" : ""}"><span>${n}</span><span class="t"><span class="f"></span></span><span class="v"></span></div>`).join("");
+  const upd = (k) => $$(".bar", box).forEach((b, i) => { const v = D[k][i][1]; $(".f", b).style.width = v * 100 + "%"; $(".v", b).textContent = v.toFixed(2); });
+  seg(sg, upd); upd("full");
+}
+
+// ---------- quiz ----------
+function quiz() {
+  const box = $("#quiz-box"); if (!box) return;
+  const Q = [
+    { q: "During the 2025 Dapu earthquake, when did CWA issue its first alert?", a: ["3.2 s after the rupture began", "7.9 s after the rupture began", "15 s after the rupture began", "27 s after the rupture began"], c: 1, why: "The first alert went out 7.9 s after origin and covered 19 cities and counties. In 2010 the same step took 27 s." },
+    { q: "What is the blind zone?", a: ["The area without seismic stations", "The area where strong shaking arrives before the alert", "The area where phones have no signal", "The area where intensity stays below 3"], c: 1, why: "Near the epicenter the S wave arrives before any alert can. In 2025 Dapu it extended about 12 km from the epicenter." },
+    { q: "Which channel delivers CWA alerts fastest?", a: ["Phone alerts by cell broadcast", "Television", "Direct links to schools, agencies and transit", "Radio"], c: 2, why: "Direct links take about 0.8 s, phone alerts about 5.5 s and TV 10 to 20 s." },
+    { q: "Why did northern Taiwan get no alert in the 2024 Hualien M7.2 earthquake?", a: ["Northern stations were offline", "The rupture kept growing after the early data window, so the magnitude was underestimated", "Northern Taiwan is outside CWA's area", "A false-alarm filter blocked the alert"], c: 1, why: "The point-source estimate used roughly the first 10 s, while most of the moment came later. New Taipei still reached intensity 5+." },
+    { q: "What triggered the false alert to schools on February 23, 2026?", a: ["A large earthquake near Hualien", "Construction blasting in Kaohsiung", "P waves from a 620 km deep M7.1 under Borneo, read as a local M4.6", "A software update"], c: 2, why: "The steep, near-simultaneous arrivals looked like a local event. M4.6 passed the 4.5 threshold for direct links but not the 5.0 threshold for phones." },
+    { q: "With only 0.01% of the labels, which P-wave picker kept an F1 score near 0.93?", a: ["EQTransformer", "PhaseNet", "SeisWav2Vec 2.0, pre-trained without labels", "A classic STA/LTA trigger"], c: 2, why: "Self-supervised pre-training lets the Large Earthquake Model learn from unlabeled waveforms. EQTransformer and PhaseNet fell to about 0.37 and 0.31." },
+  ];
+  let score = 0, answered = 0;
+  const upd = () => {
+    $("#quiz-score").textContent = `${score} / ${Q.length}`;
+    $("#quiz-status").textContent = answered === Q.length ? (score === Q.length ? "Perfect score. You're ready for the group project." : "Done. The case files explain the ones you missed.") : `${Q.length - answered} to go`;
+  };
+  function render() {
+    score = 0; answered = 0;
+    box.innerHTML = Q.map((q, i) => `<fieldset class="q" data-i="${i}"><legend>${i + 1}. ${q.q}</legend>${q.a.map((a, j) => `<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${a}</span></label>`).join("")}<p class="fb" hidden></p></fieldset>`).join("");
+    upd();
+  }
+  box.addEventListener("change", (e) => {
+    const inp = e.target; if (inp.type !== "radio") return;
+    const fs = inp.closest(".q"), q = Q[+fs.dataset.i], j = +inp.value, ok = j === q.c;
+    $$("input", fs).forEach((x) => (x.disabled = true));
+    const opts = $$(".opt", fs); opts[q.c].classList.add("right"); if (!ok) opts[j].classList.add("wrong");
+    const fb = $(".fb", fs); fb.hidden = false; fb.className = "fb " + (ok ? "ok" : "no"); fb.innerHTML = `<b>${ok ? "Correct." : "Not quite."}</b>${q.why}`;
+    if (ok) score++; answered++; upd();
+  });
+  $("#quiz-reset").addEventListener("click", render);
+  render();
+}
+
+// ---------- copy buttons ----------
+function copyBtns() {
+  $$("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+    const txt = b.dataset.copy;
+    try { await navigator.clipboard.writeText(txt); } catch (err) { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+    b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1600);
+  }));
+}
+
+hero(); race(); simulator(); timeMachine(); tabs(); pdCalc(); transformer(); lem(); quiz(); copyBtns();
+})();
+</script>
+</body>
+</html>
